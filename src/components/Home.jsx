@@ -1,6 +1,12 @@
+import { Link } from "react-router-dom";
 import heroIcon from "../assets/hero_icon.png";
+import { useSelector } from "react-redux";
+import { getUser, getUserName } from "../utils/auth";
 
 const Home = () => {
+  const userName = getUserName();
+
+  console.log(userName);
   return (
     <div className="h-[95vh] w-[95vw] bg-white rounded-md absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] shadow-xl">
       {/* navBar */}
@@ -31,11 +37,21 @@ const Home = () => {
 
         {/* login */}
 
-        <div className="py-4 mr-2">
-          <p className="px-6 py-2 bg-black text-white rounded-md  hover:bg-green-500  transition-all duration-200 text-sm md:text-base lg:px-6 lg:text-lg cursor-pointer">
-            Login
-          </p>
-        </div>
+        {userName === null && (
+          <Link to="/login" className="py-4 mr-2">
+            <p className="px-6 py-2 bg-black text-white rounded-md  hover:bg-green-500  transition-all duration-200 text-sm md:text-base lg:px-6 lg:text-lg cursor-pointer">
+              Login
+            </p>
+          </Link>
+        )}
+
+        {userName !== null && (
+          <div className="py-4 mr-2">
+            <p className="px-6 py-2 bg-green-500 text-white rounded-md  hover:bg-black  transition-all duration-200 text-sm md:text-base lg:px-6 lg:text-lg cursor-pointer">
+              {userName}
+            </p>
+          </div>
+        )}
 
         {/* login end */}
       </div>

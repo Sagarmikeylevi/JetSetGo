@@ -1,8 +1,16 @@
-import { useState } from "react";
-import { Link, Form } from "react-router-dom";
+import { Link, Form, useNavigation, useActionData } from "react-router-dom";
 
 const Login = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const response = useActionData();
+
+  if (response) {
+    console.log(response);
+  }
+
+  const navigation = useNavigation();
+
+  const isSubmitting = navigation.state === "submitting";
+
   const formLabelStyle = "font-semibold text-gray-600";
   const formInputStyle =
     "mt-2 pl-4 w-[18rem] h-[2.5rem] rounded border-[1px] border-gray-300 bg-transparent outline-none";
