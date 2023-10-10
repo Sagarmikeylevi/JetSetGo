@@ -9,7 +9,8 @@ const Login = () => {
 
   const navigation = useNavigation();
 
-  const isSubmitting = navigation.state === "submitting";
+  const isSubmitting =
+    navigation.state === "submitting" || navigation.state === "loading";
 
   const formLabelStyle = "font-semibold text-gray-600";
   const formInputStyle =

@@ -23,12 +23,8 @@ export const action = async ({ request }) => {
     );
 
     const token = response.data.data.token;
-    const user = response.data.data.user._id;
-    const userName = response.data.data.user.name;
 
     localStorage.setItem("token", token);
-    localStorage.setItem("user", user);
-    localStorage.setItem("userName", userName);
 
     const expiration = new Date();
     expiration.setHours(expiration.getHours() + 1);
