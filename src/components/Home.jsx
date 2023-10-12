@@ -3,7 +3,7 @@ import Card from "./UI/Card";
 
 const Home = () => {
   return (
-    <Card>
+    <Card className="h-[95vh] w-[95vw] bg-white rounded-md absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] shadow-xl">
       {/* body */}
       <div className="mt-2 w-[90%] h-[75%] absolute top-[20%] md:top-[12%] left-[50%] translate-x-[-50%] md:flex md:flex-row lg:w-[80%]">
         <div className="w-[100%] h-[100%] flex flex-col justify-center items-center  space-y-[2rem] md:w-[60%]">
