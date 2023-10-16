@@ -5,6 +5,7 @@ import LoginPage, { action as loginAction } from "./pages/LoginPage";
 import RegisterPage, { action as registerAction } from "./pages/RegisterPage";
 import RootLayout, { Loader } from "./pages/RootLayout";
 import FlightPage from "./pages/FlightPage";
+import AdminPage from "./pages/AdminPage";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "flights",
         element: <FlightPage />,
+      },
+      {
+        path: "dashboard",
+        element: <AdminPage />,
       },
     ],
   },
