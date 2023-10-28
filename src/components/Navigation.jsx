@@ -19,7 +19,11 @@ const Navigation = () => {
     dispatch(logout());
   };
   const renderNavbar = () => {
-    if (location.pathname === "/login" || location.pathname === "/register") {
+    if (
+      location.pathname === "/login" ||
+      location.pathname === "/register" ||
+      location.pathname === "/dashboard/flight/addFlight"
+    ) {
       return null;
     } else {
       return (
@@ -43,18 +47,19 @@ const Navigation = () => {
           {/* menu */}
 
           <div className="flex flex-row w-[50%] py-4 items-center justify-evenly">
-            {
-              (!(location.pathname === "/dashboard") && (
-                <>
-                  <p className="px-4 py-2 bg-gray-200 text-green-950 rounded-md text-sm cursor-pointer font-semibold tracking-wide hover:bg-green-600 hover:text-white hover:shadow-xl  transition-all duration-200 md:text-base lg:px-6 lg:text-lg">
-                    Flights
-                  </p>
-                  <p className="px-4 py-2 bg-gray-200 text-green-950 rounded-md text-sm cursor-pointer font-semibold tracking-wide hover:bg-green-600 hover:text-white hover:shadow-xl transition-all duration-200 md:text-base lg:px-6 lg:text-lg">
-                    Hotels
-                  </p>
-                </>
-              ))
-            }
+            {!(
+              location.pathname === "/dashboard" ||
+              location.pathname === "/dashboard/flight"
+            ) && (
+              <>
+                <p className="px-4 py-2 bg-gray-200 text-green-950 rounded-md text-sm cursor-pointer font-semibold tracking-wide hover:bg-green-600 hover:text-white hover:shadow-xl  transition-all duration-200 md:text-base lg:px-6 lg:text-lg">
+                  Flights
+                </p>
+                <p className="px-4 py-2 bg-gray-200 text-green-950 rounded-md text-sm cursor-pointer font-semibold tracking-wide hover:bg-green-600 hover:text-white hover:shadow-xl transition-all duration-200 md:text-base lg:px-6 lg:text-lg">
+                  Hotels
+                </p>
+              </>
+            )}
             {user !== null && user.role === "admin" && (
               <>
                 <p className="hidden sm:flex ml-4 px-4 py-2 bg-yellow-500 text-white rounded-md text-sm cursor-pointer font-semibold tracking-wide hover:bg-black  hover:shadow-xl transition-all duration-200 md:text-base lg:px-6 lg:text-lg">

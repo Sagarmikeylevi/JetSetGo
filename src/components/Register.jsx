@@ -2,9 +2,9 @@ import { Link, Form, useActionData, useNavigation } from "react-router-dom";
 const Register = () => {
   const response = useActionData();
 
-  if (response) {
-    console.log(response);
-  }
+  // if (response) {
+  //   console.log(response);
+  // }
 
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";

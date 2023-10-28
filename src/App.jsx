@@ -6,6 +6,10 @@ import RegisterPage, { action as registerAction } from "./pages/RegisterPage";
 import RootLayout, { Loader } from "./pages/RootLayout";
 import FlightPage from "./pages/FlightPage";
 import AdminPage from "./pages/AdminPage";
+import AdminFlight from "./pages/AdminFlight";
+import AddFlightFormPage, {
+  action as addFlightAction,
+} from "./pages/AddFlightFormPage";
 
 const router = createBrowserRouter([
   {
@@ -33,7 +37,27 @@ const router = createBrowserRouter([
       },
       {
         path: "dashboard",
-        element: <AdminPage />,
+        children: [
+          {
+            index: true,
+            element: <AdminPage />,
+          },
+          {
+            path: "flight",
+
+            children: [
+              {
+                index: true,
+                element: <AdminFlight />,
+              },
+              {
+                path: "addFlight",
+                element: <AddFlightFormPage />,
+                action: addFlightAction,
+              },
+            ],
+          },
+        ],
       },
     ],
   },
