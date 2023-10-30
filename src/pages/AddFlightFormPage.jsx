@@ -76,7 +76,7 @@ export const action = async ({ request }) => {
       // Handle the error as needed
     }
 
-    return null;
+    return;
   } catch (error) {
     console.log(error);
   }

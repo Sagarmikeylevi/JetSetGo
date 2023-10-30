@@ -52,9 +52,16 @@ const Navigation = () => {
               location.pathname === "/dashboard/flight"
             ) && (
               <>
-                <p className="px-4 py-2 bg-gray-200 text-green-950 rounded-md text-sm cursor-pointer font-semibold tracking-wide hover:bg-green-600 hover:text-white hover:shadow-xl  transition-all duration-200 md:text-base lg:px-6 lg:text-lg">
+                <Link
+                  to="/flights"
+                  className={`px-4 py-2 ${
+                    location.pathname === "/flights"
+                      ? "bg-green-600 text-white  shadow-xl"
+                      : "bg-gray-200 text-green-950hover:bg-green-600 hover:text-white hover:shadow-xl transition-all duration-200"
+                  }  rounded-md text-sm  font-semibold tracking-wide cursor-pointer md:text-base lg:px-6 lg:text-lg`}
+                >
                   Flights
-                </p>
+                </Link>
                 <p className="px-4 py-2 bg-gray-200 text-green-950 rounded-md text-sm cursor-pointer font-semibold tracking-wide hover:bg-green-600 hover:text-white hover:shadow-xl transition-all duration-200 md:text-base lg:px-6 lg:text-lg">
                   Hotels
                 </p>
@@ -62,15 +69,24 @@ const Navigation = () => {
             )}
             {user !== null && user.role === "admin" && (
               <>
-                <p className="hidden sm:flex ml-4 px-4 py-2 bg-yellow-500 text-white rounded-md text-sm cursor-pointer font-semibold tracking-wide hover:bg-black  hover:shadow-xl transition-all duration-200 md:text-base lg:px-6 lg:text-lg">
+                <Link
+                  to="/dashboard"
+                  className={`hidden sm:flex ml-4 px-4 py-2 ${
+                    location.pathname === "/dashboard"
+                      ? "bg-black shadow-xl"
+                      : "bg-yellow-500 hover:bg-black  hover:shadow-xl ld tracking-wide  transition-all duration-200"
+                  }  text-white rounded-md text-sm cursor-pointer font-semibo md:text-base lg:px-6 lg:text-lg`}
+                >
                   DashBoard
-                </p>
+                </Link>
 
-                <img
-                  src="https://cdn-icons-png.flaticon.com/128/1828/1828765.png"
-                  alt="dashboard_icon"
-                  className="ml-4 h-8 w-8 cursor-pointer sm:hidden"
-                />
+                <Link to="/dashboard">
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/128/1828/1828765.png"
+                    alt="dashboard_icon"
+                    className="ml-4 h-8 w-8 cursor-pointer sm:hidden"
+                  />
+                </Link>
               </>
             )}
           </div>

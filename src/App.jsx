@@ -10,12 +10,14 @@ import AdminFlight from "./pages/AdminFlight";
 import AddFlightFormPage, {
   action as addFlightAction,
 } from "./pages/AddFlightFormPage";
+import ErrorPage from "./pages/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
     loader: Loader,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,

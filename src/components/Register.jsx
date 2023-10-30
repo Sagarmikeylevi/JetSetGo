@@ -1,17 +1,22 @@
+import { useState } from "react";
 import { Link, Form, useActionData, useNavigation } from "react-router-dom";
+import Error from "./UI/Error";
 const Register = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const response = useActionData();
 
-  // if (response) {
-  //   console.log(response);
-  // }
+  if (response) {
+    return <Error message={response.data.error} />;
+  }
 
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
   const formLabelStyle = "font-semibold text-gray-600";
   const formInputStyle =
-    "mt-2 pl-4 w-[18rem] h-[2.5rem] rounded border-[1px] border-gray-300 bg-transparent outline-none";
+    "mt-2 pl-4 w-[18rem] h-[2.5rem] border-[1px] bg-transparent rounded-md outline-none";
 
   return (
     <div className="h-auto mt-8 w-full grid place-content-center mb-8">
@@ -42,11 +47,17 @@ const Register = () => {
               Name <span className="text-red-600">*</span>
             </label>
             <input
-              className={formInputStyle}
+              className={`${formInputStyle} ${
+                name.trim().length === 0
+                  ? " border-red-400 "
+                  : "border-green-400"
+              }`}
               type="text"
               id="name"
               name="name"
               placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
 
@@ -55,11 +66,17 @@ const Register = () => {
               Email<span className="text-red-600">*</span>
             </label>
             <input
-              className={formInputStyle}
+              className={`${formInputStyle} ${
+                email.trim().length === 0 || email.indexOf("@") === -1
+                  ? "border-red-400"
+                  : "border-green-400"
+              }`}
               type="email"
               id="email"
               name="email"
               placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
@@ -68,18 +85,31 @@ const Register = () => {
               Password <span className="text-red-600">*</span>
             </label>
             <input
-              className={formInputStyle}
+              className={`${formInputStyle} ${
+                password.trim().length === 0
+                  ? "border-red-400"
+                  : "border-green-400"
+              }`}
               type="password"
               id="password"
               name="password"
               placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
           <button
             className={`w-[18rem] h-[2.5rem] ${
               isSubmitting ? "bg-teal-400" : "bg-black"
-            } text-white rounded mt-2 hover:bg-teal-400 transition duration-300 ease-in-out`}
+            } text-white rounded mt-2 hover:bg-teal-400 transition duration-300 ease-in-out ${
+              name.trim().length === 0 ||
+              email.trim().length === 0 ||
+              email.indexOf("@") === -1 ||
+              password.trim().length === 0
+                ? `pointer-events-none`
+                : ""
+            }`}
             type="submit"
             disabled={isSubmitting}
           >

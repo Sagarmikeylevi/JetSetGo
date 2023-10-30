@@ -2,6 +2,7 @@ import { FaSearch, FaPlus } from "react-icons/fa";
 
 import Card from "./UI/Card";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const DashboardFlight = () => {
   const [flightFormOpen, setFlightFormOpen] = useState(false);
@@ -18,12 +19,15 @@ const DashboardFlight = () => {
             <FaSearch className="absolute top-[50%] translate-y-[-50%] right-4 text-gray-500 opacity-60 text-lg" />
           </div>
 
-          <div className="bg-green-400 h-[4rem] w-[4rem] rounded-full ml-4 relative shadow-lg cursor-pointer sm:hover:w-[10rem] hover:flex  hover:items-center group transition-all duration-300">
+          <Link
+            to="addFlight"
+            className="bg-green-400 h-[4rem] w-[4rem] rounded-full ml-4 relative shadow-lg cursor-pointer sm:hover:w-[10rem] hover:flex  hover:items-center group transition-all duration-300"
+          >
             <p className="hidden sm:group-hover:flex ml-4 text-white font-semibold text-lg">
               Add Flight
             </p>
             <FaPlus className="absolute top-[50%] translate-x-[-50%] left-[50%] translate-y-[-50%] text-white text-2xl sm:group-hover:left-[80%]" />
-          </div>
+          </Link>
         </div>
 
         <div className="h-[75%] w-full flex flex-col space-y-4 items-center py-4 overflow-hidden hover:overflow-y-auto scrollbar-thin scrollbar-thumb-[rgba(217,217,217,0.6)] scrollbar-track-transparent">

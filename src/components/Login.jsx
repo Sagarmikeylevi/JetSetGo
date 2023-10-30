@@ -1,10 +1,14 @@
+import { useState } from "react";
 import { Link, Form, useNavigation, useActionData } from "react-router-dom";
+import Error from "./UI/Error";
 
 const Login = () => {
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
   const response = useActionData();
 
   if (response) {
-    console.log(response);
+    return <Error message={response.data.error} />;
   }
 
   const navigation = useNavigation();
@@ -44,11 +48,17 @@ const Login = () => {
               Email<span className="text-red-600">*</span>
             </label>
             <input
-              className={formInputStyle}
+              className={`${formInputStyle} ${
+                name.trim().length === 0
+                  ? " border-red-400 "
+                  : "border-green-400"
+              }`}
               type="email"
               id="email"
               name="email"
               placeholder="Enter your email"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
 
@@ -57,18 +67,28 @@ const Login = () => {
               Password <span className="text-red-600">*</span>
             </label>
             <input
-              className={formInputStyle}
+              className={`${formInputStyle} ${
+                password.trim().length === 0
+                  ? "border-red-400"
+                  : "border-green-400"
+              }`}
               type="password"
               id="password"
               name="password"
               placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
           <button
             className={`w-[18rem] h-[2.5rem]  ${
               isSubmitting ? "bg-teal-400" : "bg-black"
-            } text-white rounded mt-2 hover:bg-teal-400 transition duration-300 ease-in-out`}
+            } text-white rounded mt-2 hover:bg-teal-400 transition duration-300 ease-in-out ${
+              name.trim().length === 0 || password.trim().length === 0
+                ? `pointer-events-none`
+                : ""
+            }`}
             type="submit"
             disabled={isSubmitting}
           >

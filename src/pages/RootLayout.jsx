@@ -15,7 +15,7 @@ const RootLayout = () => {
 
   useEffect(() => {
     if (statusCode !== 200) {
-      console.log(response.data.message);
+      // console.log(response.data.message);
     } else {
       user = response.data;
     }

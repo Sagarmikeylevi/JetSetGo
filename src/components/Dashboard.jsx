@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Card from "./UI/Card";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 
@@ -18,6 +19,7 @@ const Dashboard = () => {
 
   return (
     <Card className="h-[95vh] w-[95vw] bg-white rounded-md absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] shadow-xl">
+      {/* mobile version */}
       <div className="md:hidden w-[90%] ml-[5%] h-[80%] mt-[15%]  flex flex-row relative items-center justify-center ">
         <div
           className={` w-[90%] h-[80%] min-w-[20rem] rounded-md flex flex-col items-center justify-center sm:w-[80%] ${
@@ -29,9 +31,9 @@ const Dashboard = () => {
             alt="flight_icon"
             className="h-[80%] w-[100%]"
           />
-          <div className="py-4 px-8 cursor-pointer bg-green-400 text-white tracking-wide rounded-md flex items-center justify-center text-lg font-bold">
+          <Link to="flight" className="py-4 px-8 cursor-pointer bg-green-400 text-white tracking-wide rounded-md flex items-center justify-center text-lg font-bold">
             Flight
-          </div>
+          </Link>
         </div>
 
         <div
@@ -63,7 +65,9 @@ const Dashboard = () => {
           />
         </div>
       </div>
+      {/* mobile version end */}
 
+      {/* desktrop version */}
       <div className="hidden md:flex w-[90%] absolute  top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex-row space-x-8 justify-center items-center lg:w-[70%]">
         <div className="w-[40%] h-[80%]  flex flex-col items-center justify-center">
           <img
@@ -71,9 +75,9 @@ const Dashboard = () => {
             alt="flight_icon"
             className="h-[80%] w-[100%]"
           />
-          <div className="py-4 px-8 cursor-pointer bg-green-400 text-white tracking-wide rounded-md flex items-center justify-center text-lg font-bold uppercase">
+          <Link to='flight' className="py-4 px-8 cursor-pointer bg-green-400 text-white tracking-wide rounded-md flex items-center justify-center text-lg font-bold uppercase">
             Flight
-          </div>
+          </Link>
         </div>
 
         <div className="w-[40%] h-[80%]  flex flex-col items-center justify-center">
@@ -83,6 +87,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      {/* desktrop version end */}
     </Card>
   );
 };
