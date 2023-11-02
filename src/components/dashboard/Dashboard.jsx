@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Card from "./UI/Card";
+import Card from "../UI/Card";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 
-import flight_icon from "../assets/flight_icon.png";
-import hotel_icon from "../assets/hotel_icon.png";
+import flight_icon from "../../assets/flight_icon.png";
+import hotel_icon from "../../assets/hotel_icon.png";
 
 const Dashboard = () => {
   const [currentSection, setCurrentSection] = useState("Flight");
@@ -31,7 +31,10 @@ const Dashboard = () => {
             alt="flight_icon"
             className="h-[80%] w-[100%]"
           />
-          <Link to="flight" className="py-4 px-8 cursor-pointer bg-green-400 text-white tracking-wide rounded-md flex items-center justify-center text-lg font-bold">
+          <Link
+            to="flight"
+            className="py-4 px-8 cursor-pointer bg-green-400 text-white tracking-wide rounded-md flex items-center justify-center text-lg font-bold"
+          >
             Flight
           </Link>
         </div>
@@ -75,7 +78,10 @@ const Dashboard = () => {
             alt="flight_icon"
             className="h-[80%] w-[100%]"
           />
-          <Link to='flight' className="py-4 px-8 cursor-pointer bg-green-400 text-white tracking-wide rounded-md flex items-center justify-center text-lg font-bold uppercase">
+          <Link
+            to="flight"
+            className="py-4 px-8 cursor-pointer bg-green-400 text-white tracking-wide rounded-md flex items-center justify-center text-lg font-bold uppercase"
+          >
             Flight
           </Link>
         </div>

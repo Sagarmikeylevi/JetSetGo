@@ -5,11 +5,13 @@ import LoginPage, { action as loginAction } from "./pages/LoginPage";
 import RegisterPage, { action as registerAction } from "./pages/RegisterPage";
 import RootLayout, { Loader } from "./pages/RootLayout";
 import FlightPage from "./pages/FlightPage";
-import AdminPage from "./pages/AdminPage";
-import AdminFlight from "./pages/AdminFlight";
+import AdminPage from "./pages/adminSection/AdminPage";
+import AdminFlight, {
+  loader as allFlightLoader,
+} from "./pages/adminSection/AdminFlight";
 import AddFlightFormPage, {
   action as addFlightAction,
-} from "./pages/AddFlightFormPage";
+} from "./pages/adminSection/AddFlightFormPage";
 import ErrorPage from "./pages/ErrorPage";
 
 const router = createBrowserRouter([
@@ -51,6 +53,7 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <AdminFlight />,
+                loader: allFlightLoader,
               },
               {
                 path: "addFlight",

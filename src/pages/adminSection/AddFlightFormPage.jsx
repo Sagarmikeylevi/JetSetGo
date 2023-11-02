@@ -1,6 +1,7 @@
-import AddFlightForm from "../components/AddFlightForm";
+import AddFlightForm from "../../components/dashboard/AddFlightForm";
 import axios from "axios";
-import { getAuthToken } from "../utils/auth";
+import { getAuthToken } from "../../utils/auth";
+import { redirect } from "react-router-dom";
 
 const AddFlightFormPage = () => {
   return <AddFlightForm />;
@@ -68,16 +69,9 @@ export const action = async ({ request }) => {
       }
     );
 
-    if (response.status === 201) {
-      console.log("Flight added successfully:", response.data);
-      // Do something with the response data
-    } else {
-      console.error("Failed to add flight:", response.status, response.data);
-      // Handle the error as needed
-    }
-
-    return;
+    return redirect("/dashboard/flight");
   } catch (error) {
     console.log(error);
+    return error.response;
   }
 };

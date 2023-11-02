@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Link } from "react-router-dom";
+import { Form, Link, useActionData, useNavigation } from "react-router-dom";
 
 const InputField = ({ label, id, name, placeholder, value, onChange }) => {
   return (
@@ -74,6 +74,8 @@ const NumberInputField = ({
 };
 
 const AddFlightForm = () => {
+  const response = useActionData();
+  console.log(response);
   const [departureDest, setDepartureDest] = useState("");
   const [arrivalDest, setArrivalDest] = useState("");
   const [dates, setDates] = useState("");
@@ -83,6 +85,20 @@ const AddFlightForm = () => {
   const [premiumEconomy, setPremiumEconomy] = useState("");
   const [business, setBusiness] = useState("");
   const airlines = ["Air India", "AirAsia", "IndiGo", "SpiceJet", "Vistara"];
+
+  const navigation = useNavigation();
+  const isSubmitting =
+    navigation.state === "submitting" || navigation.state === "loading";
+
+  const submitPermission =
+    departureDest.trim().length === 0 ||
+    arrivalDest.trim().length === 0 ||
+    dates.trim().length === 0 ||
+    departureTime.trim().length === 0 ||
+    arrivalTime.trim().length === 0 ||
+    economy.trim().length === 0 ||
+    premiumEconomy.trim().length === 0 ||
+    business.trim().length === 0;
 
   return (
     <Form
@@ -189,9 +205,12 @@ const AddFlightForm = () => {
       <div className="w-full flex flex-row space-x-4 justify-center">
         <button
           type="submit"
-          className="px-6 bg-green-500 rounded-md text-white cursor-pointer"
+          className={`px-6 bg-green-500 rounded-md text-white cursor-pointer hover:bg-black ${
+            isSubmitting ? "bg-black" : "bg-green-500"
+          } ${submitPermission ? "pointer-events-none" : ""}`}
+          disabled={isSubmitting}
         >
-          Submit
+          {isSubmitting ? "Submitiing..." : "Submit"}
         </button>
         <Link
           to="/dashboard/flight"
