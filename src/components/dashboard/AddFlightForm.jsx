@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Form, Link, useActionData, useNavigation } from "react-router-dom";
+import Error from "../UI/Error";
 
 const InputField = ({ label, id, name, placeholder, value, onChange }) => {
   return (
@@ -75,7 +76,10 @@ const NumberInputField = ({
 
 const AddFlightForm = () => {
   const response = useActionData();
-  console.log(response);
+  if (response) {
+    console.log("Response ---->", response.data);
+    return <Error message={response.data.error} />;
+  }
   const [departureDest, setDepartureDest] = useState("");
   const [arrivalDest, setArrivalDest] = useState("");
   const [dates, setDates] = useState("");

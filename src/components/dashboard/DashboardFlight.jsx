@@ -9,21 +9,18 @@ const DashboardFlight = () => {
   const flights = useSelector((state) => state.flights.flights);
   const prices = useSelector((state) => state.flights.prices);
 
-  const [filteredFlights, setFliteredFlights] = useState(flights);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const searchHandler = (e) => {
-    const searchQuery = e.target.value.toLowerCase(); // Convert searchQuery to lowercase
-
-    setFliteredFlights((prevState) =>
-      prevState.filter(
-        (flight) =>
-          flight.departureDestination.toLowerCase().includes(searchQuery) ||
-          flight.arrivalDestination.toLowerCase().includes(searchQuery)
-      )
-    );
-  };
-
-  // console.log(flights);
+  const filteredFlights = flights.filter(
+    (flight) =>
+      flight.departureDestination
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      flight.arrivalDestination
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      flight.airline.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <Card className="h-[95vh] w-[95vw] bg-white rounded-md absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] shadow-xl">
@@ -34,7 +31,7 @@ const DashboardFlight = () => {
               type="text"
               placeholder="Search"
               className="bg-transparent w-[90%] h-full border-2 border-teal-500 rounded-md outline-none border-none px-4 text-[#171616] font-bold placeholder:font-normal tracking-wide md:text-base"
-              onChange={searchHandler}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
             <FaSearch className="absolute top-[50%] translate-y-[-50%] right-4 text-gray-500 opacity-60 text-lg" />
           </div>
@@ -100,7 +97,8 @@ const DashboardFlight = () => {
               }
 
               return (
-                <div
+                <Link
+                  to={`${flight._id}`}
                   className="max-w-[45rem] w-full min-h-[6rem] rounded-md bg-[#f5f5f5] shadow-md flex flex-row items-center px-6 relative cursor-pointer"
                   key={flight._id}
                 >
@@ -149,7 +147,7 @@ const DashboardFlight = () => {
                       <p>{airLine}</p>
                     </div>
                   </div>
-                </div>
+                </Link>
               );
             })}
         </div>
