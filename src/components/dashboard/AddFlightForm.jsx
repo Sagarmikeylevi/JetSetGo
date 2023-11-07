@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Form, Link, useActionData, useNavigation } from "react-router-dom";
+import {
+  Form,
+  Link,
+  useActionData,
+  useNavigation,
+  useParams,
+} from "react-router-dom";
 import Error from "../UI/Error";
 
 const InputField = ({ label, id, name, placeholder, value, onChange }) => {
@@ -89,6 +95,10 @@ const AddFlightForm = () => {
   const [premiumEconomy, setPremiumEconomy] = useState("");
   const [business, setBusiness] = useState("");
   const airlines = ["Air India", "AirAsia", "IndiGo", "SpiceJet", "Vistara"];
+
+  const { id } = useParams();
+
+  console.log(id);
 
   const navigation = useNavigation();
   const isSubmitting =

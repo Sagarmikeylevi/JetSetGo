@@ -1,20 +1,16 @@
 import { useSelector } from "react-redux";
 import FlightDetails from "../../components/dashboard/FlightDetails";
+import { useParams } from "react-router-dom";
 
 const FlightDetailsPage = () => {
+  const { flightID } = useParams();
+
+  // console.log(flightID);
   const flights = useSelector((state) => state.flights.flights);
-  const currentURL = window.location.href;
 
-  const urlParts = currentURL.split("/");
+  const flight = flights.filter((flight) => flight._id === flightID);
 
-  const flightId = urlParts[urlParts.length - 1];
-
-  // const flight = flights.filter((flight) => flight._id === flightId);
-  console.log(flights)
-
-  // console.log(flight);
-
-  return <FlightDetails />;
+  return <FlightDetails flight={flight[0]} />;
 };
 
 export default FlightDetailsPage;

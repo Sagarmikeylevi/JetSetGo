@@ -62,6 +62,10 @@ const router = createBrowserRouter([
                 path: ":flightID",
                 element: <FlightDetailsPage />,
               },
+              {
+                path: "update/:id",
+                element: <AddFlightFormPage />,
+              },
             ],
           },
         ],

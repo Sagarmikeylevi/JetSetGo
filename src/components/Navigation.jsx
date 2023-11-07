@@ -20,9 +20,10 @@ const Navigation = () => {
   };
   const renderNavbar = () => {
     if (
-      location.pathname === "/login" ||
-      location.pathname === "/register" ||
-      location.pathname === "/dashboard/flight/addFlight"
+      (location.pathname === "/login" ||
+        location.pathname === "/register" ||
+        location.pathname === "/dashboard/flight/addFlight",
+      location.pathname.startsWith("/dashboard/flight/update"))
     ) {
       return null;
     } else {
@@ -49,7 +50,7 @@ const Navigation = () => {
           <div className="flex flex-row w-[50%] py-4 items-center justify-evenly">
             {!(
               location.pathname === "/dashboard" ||
-              location.pathname === "/dashboard/flight"
+              location.pathname.startsWith("/dashboard/flight")
             ) && (
               <>
                 <Link
