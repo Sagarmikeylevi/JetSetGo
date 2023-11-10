@@ -11,6 +11,8 @@ export default AddFlightFormPage;
 
 export const action = async ({ request }) => {
   try {
+    const currentURL = window.location.href;
+    console.log("Current URL:", currentURL);
     const token = getAuthToken();
     const data = await request.formData();
     const dates = data.get("dates");
@@ -59,19 +61,39 @@ export const action = async ({ request }) => {
       airline: data.get("airlines"),
       seatsAvailable: seatsClass,
     };
-    const response = await axios.post(
-      "http://localhost:8000/api/flight/add",
-      flightData,
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
+
+    console.log("Its working....");
+
+    let response = "";
+
+    if (currentURL.includes("update")) {
+      const UrlParts = currentURL.split("/");
+      const Id = UrlParts[UrlParts.length - 1];
+
+      response = await axios.put(
+        `http://localhost:8000/api/flight/update/${Id}`,
+        flightData,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+    } else {
+       response = await axios.post(
+        "http://localhost:8000/api/flight/add",
+        flightData,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+    }
 
     return redirect("/dashboard/flight");
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return error.response;
   }
 };

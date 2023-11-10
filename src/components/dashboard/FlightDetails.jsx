@@ -1,5 +1,5 @@
+import { Link } from "react-router-dom";
 import Card from "../UI/Card";
-
 const FlightDetails = ({ flight }) => {
   return (
     <Card className="h-[95vh] w-[95vw] bg-white rounded-md absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] shadow-xl">
@@ -84,9 +84,12 @@ const FlightDetails = ({ flight }) => {
         </div>
 
         <div className="flex justify-center space-x-4">
-          <button className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none">
+          <Link
+            to={`/dashboard/flight/update/${flight ? flight._id : ""}`}
+            className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none"
+          >
             Update
-          </button>
+          </Link>
           <button className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none">
             Delete
           </button>

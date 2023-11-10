@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Form,
   Link,
   useActionData,
+  useLocation,
   useNavigation,
   useParams,
 } from "react-router-dom";
 import Error from "../UI/Error";
+import { useSelector } from "react-redux";
 
 const InputField = ({ label, id, name, placeholder, value, onChange }) => {
   return (
@@ -94,11 +96,24 @@ const AddFlightForm = () => {
   const [economy, setEconomy] = useState("");
   const [premiumEconomy, setPremiumEconomy] = useState("");
   const [business, setBusiness] = useState("");
+  const [selectedFlight, setSelectedFlight] = useState(null);
   const airlines = ["Air India", "AirAsia", "IndiGo", "SpiceJet", "Vistara"];
 
-  const { id } = useParams();
+  const location = useLocation();
 
-  console.log(id);
+  if (location.pathname.startsWith("/dashboard/flight/update")) {
+    const { id } = useParams();
+    const flights = useSelector((state) => state.flights.flights);
+
+    useEffect(() => {
+      const fetchFlightDetails = () => {
+        const flight = flights.find((flight) => flight._id === id);
+        setSelectedFlight(flight);
+      };
+
+      fetchFlightDetails();
+    }, [flights]);
+  }
 
   const navigation = useNavigation();
   const isSubmitting =
@@ -114,9 +129,12 @@ const AddFlightForm = () => {
     premiumEconomy.trim().length === 0 ||
     business.trim().length === 0;
 
+
+  let mode = selectedFlight ? "PUT" : "POST";
+
   return (
     <Form
-      method="POST"
+      method={mode}
       className="h-[90%] w-[90%] px-4 py-8 sm:px-8 max-w-[40rem] bg-white rounded-md absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] shadow-xl space-y-4"
     >
       {/* section-1 */}
@@ -125,19 +143,23 @@ const AddFlightForm = () => {
           label="Departure Destination"
           id="departure-destination"
           name="departure-destination"
-          placeholder="City-Country"
+          placeholder={`${
+            selectedFlight
+              ? selectedFlight.departureDestination
+              : "City-Country"
+          }`}
           value={departureDest}
           onChange={(e) => setDepartureDest(e.target.value)}
-          error={departureDest.trim().length === 0}
         />
         <InputField
           label="Arrival Destination"
           id="arrival-destination"
           name="arrival-destination"
-          placeholder="City-Country"
+          placeholder={`${
+            selectedFlight ? selectedFlight.arrivalDestination : "City-Country"
+          }`}
           value={arrivalDest}
           onChange={(e) => setArrivalDest(e.target.value)}
-          error={arrivalDest.trim().length === 0}
         />
       </div>
       {/* section-1 end */}
@@ -150,16 +172,16 @@ const AddFlightForm = () => {
           placeholder="date1 - date2 - ----"
           value={dates}
           onChange={(e) => setDates(e.target.value)}
-          error={dates.trim().length === 0}
         />
         <InputField
           label="Departure Time"
           id="departure-time"
           name="departure-time"
-          placeholder="6:00 to 22:00"
+          placeholder={`${
+            selectedFlight ? selectedFlight.timeOfDeparture : "6:00 to 22:00"
+          }`}
           value={departureTime}
           onChange={(e) => setDepartureTime(e.target.value)}
-          error={departureTime.trim().length === 0}
         />
       </div>
       {/* section-2 end */}
@@ -169,17 +191,17 @@ const AddFlightForm = () => {
           label="Arrival Time"
           id="arrival-time"
           name="arrival-time"
-          placeholder="7:00 to 24:00"
+          placeholder={`${
+            selectedFlight ? selectedFlight.timeOfArrival : "7:00 to 24:00"
+          }`}
           value={arrivalTime}
           onChange={(e) => setArrivalTime(e.target.value)}
-          error={arrivalTime.trim().length === 0}
         />
         <SelectField
           label="Airlines"
           id="airlines"
           name="airlines"
           options={airlines}
-          onChange={() => {}}
         />
       </div>
       {/* section-3 end */}
@@ -189,28 +211,33 @@ const AddFlightForm = () => {
           label="Economy"
           id="economy"
           name="economy"
-          placeholder="0 to 15"
+          placeholder={`${
+            selectedFlight ? selectedFlight.seatsAvailable.economy : "0 to 15"
+          }`}
           value={economy}
           onChange={(e) => setEconomy(e.target.value)}
-          error={economy.trim().length === 0}
         />
         <NumberInputField
           label="P-Economy"
           id="premium-economy"
           name="premium-economy"
-          placeholder="0 to 10"
+          placeholder={`${
+            selectedFlight
+              ? selectedFlight.seatsAvailable.premiumEconomy
+              : "0 to 10"
+          }`}
           value={premiumEconomy}
           onChange={(e) => setPremiumEconomy(e.target.value)}
-          error={premiumEconomy.trim().length === 0}
         />
         <NumberInputField
           label="Business"
           id="business"
           name="business"
-          placeholder="0 to 5"
+          placeholder={`${
+            selectedFlight ? selectedFlight.seatsAvailable.business : "0 to 5"
+          }`}
           value={business}
           onChange={(e) => setBusiness(e.target.value)}
-          error={business.trim().length === 0}
         />
       </div>
       {/* section-4 end */}

@@ -20,10 +20,10 @@ const Navigation = () => {
   };
   const renderNavbar = () => {
     if (
-      (location.pathname === "/login" ||
-        location.pathname === "/register" ||
-        location.pathname === "/dashboard/flight/addFlight",
-      location.pathname.startsWith("/dashboard/flight/update"))
+      location.pathname === "/login" ||
+      location.pathname === "/register" ||
+      location.pathname === "/dashboard/flight/addFlight" ||
+      location.pathname.startsWith("/dashboard/flight/update")
     ) {
       return null;
     } else {
