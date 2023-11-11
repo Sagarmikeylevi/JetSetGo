@@ -11,7 +11,7 @@ const DashboardFlight = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredFlights = flights.filter(
+  const filteredFlights = flights.length === 0 ? "" : flights.filter(
     (flight) =>
       flight.departureDestination
         .toLowerCase()

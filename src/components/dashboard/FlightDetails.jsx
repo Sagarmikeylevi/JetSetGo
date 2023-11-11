@@ -1,6 +1,37 @@
 import { Link } from "react-router-dom";
 import Card from "../UI/Card";
+import axios from "axios";
+import { getAuthToken } from "../../utils/auth";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setFlights } from "../../store/flight-slice";
 const FlightDetails = ({ flight }) => {
+  const navigate = useNavigate();
+  const flights = useSelector((state) => state.flights.flights);
+  const dispatch = useDispatch();
+  const deleteFlightHandler = (id) => {
+    deteleReq(id);
+    const newFlights = flights.filter((flight) => flight._id !== id);
+    dispatch(setFlights({ flights:newFlights }));
+    console.log("Flights ===>", flights);
+    navigate("/dashboard/flight");
+  };
+
+  const deteleReq = async (id) => {
+    try {
+      const token = getAuthToken();
+      const response = await axios.delete(
+        `http://localhost:8000/api/flight/delete/${id}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Card className="h-[95vh] w-[95vw] bg-white rounded-md absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] shadow-xl">
       <div className="h-[85%] w-[90%] rounded-md absolute top-[12%] left-[50%] translate-x-[-50%] bg-[rgba(230,230,230,0.66)] shadow-lg p-8 max-w-[30rem]">
@@ -90,7 +121,10 @@ const FlightDetails = ({ flight }) => {
           >
             Update
           </Link>
-          <button className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none">
+          <button
+            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none"
+            onClick={() => deleteFlightHandler(flight._id)}
+          >
             Delete
           </button>
         </div>
