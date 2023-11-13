@@ -25,7 +25,7 @@ const DashboardFlight = () => {
   return (
     <Card className="h-[95vh] w-[95vw] bg-white rounded-md absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] shadow-xl">
       <div className="mt-8 h-[85%] w-[95%] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] space-y-6">
-        <div className="w-full h-[20%] flex flex-row items-center justify-between px-4 ">
+        <div className="w-full h-[20%] flex flex-row items-center justify-between px-4">
           <div className="max-w-[25rem] w-[60%] h-[3rem] rounded-md bg-[#f2f2f2] shadow-sm relative">
             <input
               type="text"

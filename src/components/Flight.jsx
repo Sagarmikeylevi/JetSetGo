@@ -1,9 +1,10 @@
 import Card from "./UI/Card";
 import flight_icon from "../assets/flight_icon.png";
-import { FaCalendar, FaUser, FaSearch, FaCaretDown } from "react-icons/fa";
+import { FaCalendar, FaUser, FaSearch } from "react-icons/fa";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Error from "./UI/Error";
 
 const Flight = () => {
   const [openDestination, setOpenDestination] = useState(false);
@@ -15,6 +16,7 @@ const Flight = () => {
   const [departureDate, setDepartureDate] = useState(new Date());
   const [selectedClass, setSelectedClass] = useState("Economy");
   const [flightIcon, setFlightIcon] = useState("");
+  const [searchError, setSearchError] = useState(false);
 
   const chooseDestinationHandler = (city) => {
     if (isDepartureDest) setDepartureDest(city);
@@ -42,19 +44,172 @@ const Flight = () => {
     }, 200);
   };
 
-  const demoSuggestions = [
+  // add those city's and their airpot name
+  const allDestination = [
+    {
+      city: "Mumbai",
+      airport: "Chhatrapati Shivaji Maharaj International Airport",
+    },
+    {
+      city: "Delhi",
+      airport: "Indira Gandhi International Airport",
+    },
+    {
+      city: "Bengaluru",
+      airport: "Kempegowda International Airport",
+    },
+    {
+      city: "Hyderabad",
+      airport: "Rajiv Gandhi International Airport",
+    },
+    {
+      city: "Chennai",
+      airport: "Chennai International Airport",
+    },
     {
       city: "Kolkata",
       airport: "Netaji Subhash Chandra Bose International Airport",
     },
     {
-      city: "Mumbai",
-      airport: "Chhatrapati Shivaji International Airport",
+      city: "Ahmedabad",
+      airport: "Sardar Vallabhbhai Patel International Airport",
+    },
+    {
+      city: "Pune",
+      airport: "Pune Airport",
+    },
+    {
+      city: "Jaipur",
+      airport: "Jaipur International Airport",
+    },
+    {
+      city: "Lucknow",
+      airport: "Chaudhary Charan Singh International Airport",
+    },
+    {
+      city: "Goa",
+      airport: "Goa International Airport",
+    },
+    {
+      city: "Kochi",
+      airport: "Cochin International Airport",
+    },
+    {
+      city: "Trivandrum",
+      airport: "Trivandrum International Airport",
+    },
+    {
+      city: "Guwahati",
+      airport: "Lokpriya Gopinath Bordoloi International Airport",
+    },
+    {
+      city: "Nagpur",
+      airport: "Dr. Babasaheb Ambedkar International Airport",
+    },
+    {
+      city: "Coimbatore",
+      airport: "Coimbatore International Airport",
+    },
+    {
+      city: "Visakhapatnam",
+      airport: "Visakhapatnam International Airport",
+    },
+    {
+      city: "Bhubaneswar",
+      airport: "Biju Patnaik International Airport",
+    },
+    {
+      city: "Amritsar",
+      airport: "Sri Guru Ram Dass Jee International Airport",
+    },
+    {
+      city: "Madurai",
+      airport: "Madurai Airport",
+    },
+    {
+      city: "Agra",
+      airport: "Kheria Airport",
+    },
+    {
+      city: "Ranchi",
+      airport: "Birsa Munda Airport",
+    },
+    {
+      city: "Patna",
+      airport: "Jay Prakash Narayan International Airport",
+    },
+    {
+      city: "Surat",
+      airport: "Surat International Airport",
+    },
+    {
+      city: "Varanasi",
+      airport: "Lal Bahadur Shastri International Airport",
+    },
+    {
+      city: "Jodhpur",
+      airport: "Jodhpur Airport",
+    },
+    {
+      city: "Srinagar",
+      airport: "Sheikh ul-Alam International Airport",
+    },
+    {
+      city: "Cochin",
+      airport: "Cochin International Airport",
+    },
+    {
+      city: "Gaya",
+      airport: "Gaya Airport",
+    },
+    {
+      city: "Agartala",
+      airport: "Maharaja Bir Bikram Airport",
+    },
+    {
+      city: "Raipur",
+      airport: "Swami Vivekananda Airport",
+    },
+    {
+      city: "Imphal",
+      airport: "Bir Tikendrajit International Airport",
+    },
+    {
+      city: "Leh",
+      airport: "Kushok Bakula Rimpochee Airport",
+    },
+    {
+      city: "Port Blair",
+      airport: "Veer Savarkar International Airport",
+    },
+    {
+      city: "Siliguri",
+      airport: "Bagdogra Airport",
+    },
+    {
+      city: "Dibrugarh",
+      airport: "Dibrugarh Airport",
+    },
+    {
+      city: "Jammu",
+      airport: "Jammu Airport",
+    },
+    {
+      city: "Bhuj",
+      airport: "Bhuj Airport",
+    },
+    {
+      city: "Tirupati",
+      airport: "Tirupati Airport",
+    },
+    {
+      city: "Vadodara",
+      airport: "Vadodara Airport",
     },
   ];
 
-  const filteredSuggestions = demoSuggestions.filter((suggestion) =>
-    suggestion.city.toLowerCase().includes(destinationQuery.toLocaleLowerCase())
+  const filteredAllDestinations = allDestination.filter((dest) =>
+    dest.city.toLowerCase().includes(destinationQuery.toLocaleLowerCase())
   );
 
   const flightDetails = [
@@ -73,6 +228,21 @@ const Flight = () => {
       country: "India",
     },
   ];
+
+  const handleSearchFlights = () => {
+    if (departureDest === arrivalDest) {
+      console.log("Not Okay");
+      setSearchError(true);
+    } else {
+      console.log("Okay");
+    }
+  };
+
+  if (searchError) {
+    return (
+      <Error message="Departure and arrival destinations cannot be the same." />
+    );
+  }
   return (
     <>
       {openDestination && (
@@ -84,12 +254,12 @@ const Flight = () => {
             value={destinationQuery}
             onChange={(e) => setDestinationQuery(e.target.value)}
           />
-          <div className="w-full h-[80%] mt-2 space-y-2">
-            {filteredSuggestions.map((suggestion, index) => (
+          <div className="w-full h-[80%] mt-2 space-y-2 overflow-hidden hover:overflow-y-auto scrollbar-thin scrollbar-thumb-[rgba(217,217,217,0.6)] scrollbar-track-transparent">
+            {filteredAllDestinations.map((dest, index) => (
               <div
                 className="w-full h-[20%] bg-white rounded-md relative cursor-pointer"
                 key={index}
-                onClick={() => chooseDestinationHandler(suggestion.city)}
+                onClick={() => chooseDestinationHandler(dest.city)}
               >
                 <img
                   src={flightIcon}
@@ -98,8 +268,8 @@ const Flight = () => {
                 />
 
                 <div className="absolute left-[15%] top-[50%] translate-y-[-50%]">
-                  <p className="font-bold text-bold">{suggestion.city}</p>
-                  <p className="text-xs text-gray-500">{suggestion.airport}</p>
+                  <p className="font-bold text-bold">{dest.city}</p>
+                  <p className="text-xs text-gray-500">{dest.airport}</p>
                 </div>
               </div>
             ))}
@@ -198,7 +368,10 @@ const Flight = () => {
               </div>
             </div>
 
-            <div className="mt-2 h-[16%] w-[50%] ml-[25%] rounded-md bg-green-400 flex items-center justify-center space-x-2 text-[rgba(255,255,255,0.9)] hover:bg-black transition-all duration-200 cursor-pointer md:mt-4 md:w-[30%] md:ml-[35%] md:h-[20%] md:text-lg">
+            <div
+              className="mt-2 h-[16%] w-[50%] ml-[25%] rounded-md bg-green-400 flex items-center justify-center space-x-2 text-[rgba(255,255,255,0.9)] hover:bg-black transition-all duration-200 cursor-pointer md:mt-4 md:w-[30%] md:ml-[35%] md:h-[20%] md:text-lg"
+              onClick={handleSearchFlights}
+            >
               <FaSearch />
               <p className="font-semibold">Search Flights</p>
             </div>
