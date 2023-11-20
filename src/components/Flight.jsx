@@ -5,6 +5,7 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Error from "./UI/Error";
+import { useNavigate } from "react-router-dom";
 
 const Flight = () => {
   const [openDestination, setOpenDestination] = useState(false);
@@ -17,6 +18,7 @@ const Flight = () => {
   const [selectedClass, setSelectedClass] = useState("Economy");
   const [flightIcon, setFlightIcon] = useState("");
   const [searchError, setSearchError] = useState(false);
+  const navigate = useNavigate();
 
   const chooseDestinationHandler = (city) => {
     if (isDepartureDest) setDepartureDest(city);
@@ -234,7 +236,18 @@ const Flight = () => {
       console.log("Not Okay");
       setSearchError(true);
     } else {
-      console.log("Okay");
+      const departure_destination = departureDest + "-India";
+      const arrival_destination = arrivalDest + "-India";
+      const departure_date = departureDate.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        weekday: "long",
+      });
+
+      const url = `flight-results?departure=${departure_destination}&arrival=${arrival_destination}&date=${departure_date}&class=${selectedClass}`;
+
+      navigate(`/flights/${url}`);
     }
   };
 
