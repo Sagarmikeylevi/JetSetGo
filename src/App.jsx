@@ -13,6 +13,7 @@ import AddFlightFormPage, {
 import ErrorPage from "./pages/ErrorPage";
 import FlightDetailsPage from "./pages/adminSection/FlightDetailsPage";
 import SearchedFlightsPage from "./pages/SearchedFlightsPage";
+import PassengerDetailsPage from "./pages/PassengerDetailsPage";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
           {
             path: "flight-results",
             element: <SearchedFlightsPage />,
+          },
+          {
+            path: "passenger-details",
+            element: <PassengerDetailsPage />,
           },
         ],
       },

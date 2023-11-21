@@ -104,7 +104,10 @@ const SearchedFlights = ({ data }) => {
         </div>
         {/* section - 2 end */}
         {/* section - 3*/}
-        <div className="h-[60%] w-[95%] flex flex-col space-y-2 items-center p-4 bg-[#e6e6e6] rounded-md">
+        <div className="h-[60%] w-[95%] flex flex-col space-y-2 items-center p-4 bg-[#e6e6e6] rounded-md relative">
+          {data[1].searchFlights.searchedFlights.length === 0 && (
+            <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-xl text-gray-600 font-semibold uppercase">No Flights </div>
+          )}
           {data[1].searchFlights.searchedFlights.map((flight) => {
             const airLine = flight.airline;
             let price = "";

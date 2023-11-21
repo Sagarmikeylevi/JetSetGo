@@ -23,7 +23,8 @@ const Navigation = () => {
       location.pathname === "/login" ||
       location.pathname === "/register" ||
       location.pathname === "/dashboard/flight/addFlight" ||
-      location.pathname.startsWith("/dashboard/flight/update")
+      location.pathname.startsWith("/dashboard/flight/update") ||
+      location.pathname === "/flights/passenger-details"
     ) {
       return null;
     } else {
