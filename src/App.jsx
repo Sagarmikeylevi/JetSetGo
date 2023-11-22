@@ -13,7 +13,9 @@ import AddFlightFormPage, {
 import ErrorPage from "./pages/ErrorPage";
 import FlightDetailsPage from "./pages/adminSection/FlightDetailsPage";
 import SearchedFlightsPage from "./pages/SearchedFlightsPage";
-import PassengerDetailsPage from "./pages/PassengerDetailsPage";
+import PassengerDetailsPage, {
+  action as passengerAction,
+} from "./pages/PassengerDetailsPage";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +52,7 @@ const router = createBrowserRouter([
           {
             path: "passenger-details",
             element: <PassengerDetailsPage />,
+            action: passengerAction,
           },
         ],
       },

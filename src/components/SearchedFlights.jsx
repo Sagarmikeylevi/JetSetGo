@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import Card from "./UI/Card";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SearchedFlights = ({ data }) => {
   const prices = useSelector((state) => state.flights.prices);
@@ -18,6 +18,7 @@ const SearchedFlights = ({ data }) => {
     weekday: "long",
     day: "numeric",
     month: "short",
+    year: "numeric",
   })}`;
 
   const today = new Date();
@@ -35,8 +36,6 @@ const SearchedFlights = ({ data }) => {
 
     return null; // Exclude dates outside the 30-day range
   }).filter((date) => date !== null);
-
-  console.log(formattedSearchDate);
 
   const handleSearchFlights = (departureDate) => {
     const departure_date = departureDate.toLocaleDateString("en-IN", {
@@ -106,7 +105,9 @@ const SearchedFlights = ({ data }) => {
         {/* section - 3*/}
         <div className="h-[60%] w-[95%] flex flex-col space-y-2 items-center p-4 bg-[#e6e6e6] rounded-md relative">
           {data[1].searchFlights.searchedFlights.length === 0 && (
-            <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-xl text-gray-600 font-semibold uppercase">No Flights </div>
+            <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-xl text-gray-600 font-semibold uppercase">
+              No Flights{" "}
+            </div>
           )}
           {data[1].searchFlights.searchedFlights.map((flight) => {
             const airLine = flight.airline;
@@ -132,7 +133,8 @@ const SearchedFlights = ({ data }) => {
             }
 
             return (
-              <div
+              <Link
+                to={`/flights/passenger-details?flightId=${flight._id}&class=${flight_class}&price=${price}&date=${formattedSearchDate}`}
                 className="max-w-[45rem] w-full min-h-[6rem] rounded-md bg-[#f5f5f5] shadow-md flex flex-row items-center px-8 relative cursor-pointer justify-between"
                 key={flight._id}
               >
@@ -174,7 +176,7 @@ const SearchedFlights = ({ data }) => {
                     ? "PremiumEconomy"
                     : flight_class}
                 </p>
-              </div>
+              </Link>
             );
           })}
         </div>

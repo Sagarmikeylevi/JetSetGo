@@ -2,12 +2,20 @@ import React, { useState } from "react";
 import { Form, Link } from "react-router-dom";
 
 const PassengerDetails = () => {
-   const [fullName, setFullName] = useState("");
-   const [dob, setDob] = useState("");
-   const [nationality, setNationality] = useState("");
-   const [panCard, setPanCard] = useState("");
-   const [phone, setPhone] = useState("");
-   const [email, setEmail] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [dob, setDob] = useState("");
+  const [nationality, setNationality] = useState("");
+  const [panCard, setPanCard] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+
+  const submitPermission =
+    fullName.trim().length === 0 ||
+    dob.trim().length === 0 ||
+    nationality.trim().length === 0 ||
+    panCard.trim().length === 0 ||
+    phone.trim().length === 0 ||
+    email.trim().length === 0;
 
   return (
     <div className="h-[95vh] w-[90%] max-w-[30rem] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-md bg-white shadow-md">
@@ -22,7 +30,7 @@ const PassengerDetails = () => {
         </h2>
       </div>
 
-      <Form className="absolute top-[15%] w-[90%] h-[85%] ml-[5%]">
+      <Form method="POST" className="absolute top-[15%] w-[90%] h-[85%] ml-[5%]">
         {/* Full name */}
         <div className="w-full mb-4">
           <label
@@ -162,7 +170,9 @@ const PassengerDetails = () => {
         <div className="mt-8 w-full flex flex-row justify-end space-x-4">
           <button
             type="submit"
-            className="border-none outline-none px-6 py-2 bg-green-500 text-white rounded-md font-thin text-lg"
+            className={`border-none outline-none px-6 py-2 bg-green-500 text-white rounded-md font-thin text-lg ${
+              submitPermission ? "pointer-events-none" : "hover:bg-black transition-all duration-200 cursor-pointer"
+            }`}
           >
             Submit
           </button>
