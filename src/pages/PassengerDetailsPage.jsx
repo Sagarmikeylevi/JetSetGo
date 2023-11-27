@@ -1,4 +1,4 @@
-import { useActionData, useLocation } from "react-router-dom";
+import { useActionData, useLocation, useNavigate } from "react-router-dom";
 import PassengerDetails from "../components/PassengerDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { setPassenger } from "../store/passenger-slice";
@@ -16,9 +16,9 @@ const PassengerDetailsPage = () => {
 
   const specificFlight = flights.filter((flight) => flight._id === flightId);
 
-  console.log("SPECIFIC FLIGHT ===> ", specificFlight);
-
   const passengerData = useActionData();
+
+  const navigate = useNavigate();
 
   if (passengerData) {
     const passengerDetails = {
@@ -39,8 +39,11 @@ const PassengerDetailsPage = () => {
       price: price,
     };
 
-    // console.log("PASSENGER DATA ===>", passengerDetails);
-    dispatch(setPassenger(passengerDetails));
+    setTimeout(() => {
+      console.log("PASSENGER DATA ===>", passengerDetails);
+      dispatch(setPassenger({ passengerDetails }));
+      navigate("/flights/show-passenger");
+    }, 1000);
   }
   return <PassengerDetails />;
 };

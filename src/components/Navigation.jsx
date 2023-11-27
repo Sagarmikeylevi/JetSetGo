@@ -24,7 +24,8 @@ const Navigation = () => {
       location.pathname === "/register" ||
       location.pathname === "/dashboard/flight/addFlight" ||
       location.pathname.startsWith("/dashboard/flight/update") ||
-      location.pathname === "/flights/passenger-details"
+      location.pathname === "/flights/passenger-details" ||
+      location.pathname === "/flights/show-passenger"
     ) {
       return null;
     } else {
@@ -58,12 +59,20 @@ const Navigation = () => {
                   to="/flights"
                   className={`px-4 py-2 ${
                     location.pathname === "/flights"
-                      ? "bg-green-600 text-white  shadow-xl"
+                      ? "hidden"
                       : "bg-gray-200 text-green-950hover:bg-green-600 hover:text-white hover:shadow-xl transition-all duration-200"
                   }  rounded-md text-sm  font-semibold tracking-wide cursor-pointer md:text-base lg:px-6 lg:text-lg`}
                 >
                   Flights
                 </Link>
+                {location.pathname === "/flights" && (
+                  <Link
+                    to="/flights/on-board-list"
+                    className="px-4 py-2 bg-gray-200 text-green-950 rounded-md text-sm cursor-pointer font-semibold tracking-wide hover:bg-green-600 hover:text-white hover:shadow-xl transition-all duration-200 md:text-base lg:px-6 lg:text-lg"
+                  >
+                    OnBoardList
+                  </Link>
+                )}
                 <p className="px-4 py-2 bg-gray-200 text-green-950 rounded-md text-sm cursor-pointer font-semibold tracking-wide hover:bg-green-600 hover:text-white hover:shadow-xl transition-all duration-200 md:text-base lg:px-6 lg:text-lg">
                   Hotels
                 </p>

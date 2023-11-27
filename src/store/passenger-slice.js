@@ -8,7 +8,9 @@ const passengerSlice = createSlice({
   },
   reducers: {
     setPassenger(state, action) {
-      state.passenger = action.payload;
+      const { passengerDetails } = action.payload;
+      console.log("WOOOOO ====>", action.payload);
+      state.passenger = passengerDetails;
     },
   },
 });

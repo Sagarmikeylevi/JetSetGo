@@ -16,6 +16,9 @@ import SearchedFlightsPage from "./pages/SearchedFlightsPage";
 import PassengerDetailsPage, {
   action as passengerAction,
 } from "./pages/PassengerDetailsPage";
+import ShowPassengerPage from "./pages/ShowPassengerPage";
+import OnBoardListPage from "./pages/OnBoardListPage";
+import OnBoardPassengerPage from "./pages/OnBoardPassengerPage";
 
 const router = createBrowserRouter([
   {
@@ -53,6 +56,23 @@ const router = createBrowserRouter([
             path: "passenger-details",
             element: <PassengerDetailsPage />,
             action: passengerAction,
+          },
+          {
+            path: "show-passenger",
+            element: <ShowPassengerPage />,
+          },
+          {
+            path: "on-board-list",
+            children: [
+              {
+                index: true,
+                element: <OnBoardListPage />,
+              },
+              {
+                path: "conform",
+                element: <OnBoardPassengerPage />,
+              },
+            ],
           },
         ],
       },

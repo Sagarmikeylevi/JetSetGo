@@ -30,7 +30,10 @@ const PassengerDetails = () => {
         </h2>
       </div>
 
-      <Form method="POST" className="absolute top-[15%] w-[90%] h-[85%] ml-[5%]">
+      <Form
+        method="POST"
+        className="absolute top-[15%] w-[90%] h-[85%] ml-[5%]"
+      >
         {/* Full name */}
         <div className="w-full mb-4">
           <label
@@ -169,9 +172,12 @@ const PassengerDetails = () => {
         {/* submission */}
         <div className="mt-8 w-full flex flex-row justify-end space-x-4">
           <button
+            
             type="submit"
             className={`border-none outline-none px-6 py-2 bg-green-500 text-white rounded-md font-thin text-lg ${
-              submitPermission ? "pointer-events-none" : "hover:bg-black transition-all duration-200 cursor-pointer"
+              submitPermission
+                ? "pointer-events-none"
+                : "hover:bg-black transition-all duration-200 cursor-pointer"
             }`}
           >
             Submit
