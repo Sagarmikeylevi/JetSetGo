@@ -1,17 +1,57 @@
 import { useState } from "react";
-import { Link, Form, useNavigation, useActionData } from "react-router-dom";
+import {
+  Link,
+  Form,
+  useNavigation,
+  useActionData,
+  useNavigate,
+} from "react-router-dom";
 import Error from "./UI/Error";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setToken } from "../store/user-slice";
 
 const Login = () => {
-  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const response = useActionData();
-
-  if (response) {
-    return <Error message={response.data.error} />;
-  }
-
+  const dispatch = useDispatch();
   const navigation = useNavigation();
+  const navigate = useNavigate();
+  // const response = useActionData();
+
+  // if (response) {
+  //   return <Error message={response.data.error} />;
+  // }
+
+  const loginHandler = (e) => {
+    e.preventDefault();
+
+    // console.log("Clicked");
+
+    const loginData = {
+      email,
+      password,
+    };
+
+    const SendLoginData = async (data) => {
+      try {
+        const response = await axios.post(
+          "http://localhost:8000/api/user/login",
+          data
+        );
+
+        const token = response.data.data.token;
+        // console.log("TOKEN ===>", token);
+        dispatch(setToken({ token }));
+
+        navigate("/");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    SendLoginData(loginData);
+  };
 
   const isSubmitting =
     navigation.state === "submitting" || navigation.state === "loading";
@@ -42,14 +82,18 @@ const Login = () => {
           </p>
         </div>
 
-        <Form method="POST" className="flex flex-col gap-2">
+        <Form
+          onSubmit={loginHandler}
+          method="POST"
+          className="flex flex-col gap-2"
+        >
           <div className="flex flex-col">
             <label htmlFor="email" className={formLabelStyle}>
               Email<span className="text-red-600">*</span>
             </label>
             <input
               className={`${formInputStyle} ${
-                name.trim().length === 0
+                email.trim().length === 0
                   ? " border-red-400 "
                   : "border-green-400"
               }`}
@@ -57,8 +101,8 @@ const Login = () => {
               id="email"
               name="email"
               placeholder="Enter your email"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
@@ -85,7 +129,7 @@ const Login = () => {
             className={`w-[18rem] h-[2.5rem]  ${
               isSubmitting ? "bg-teal-400" : "bg-black"
             } text-white rounded mt-2 hover:bg-teal-400 transition duration-300 ease-in-out ${
-              name.trim().length === 0 || password.trim().length === 0
+              email.trim().length === 0 || password.trim().length === 0
                 ? `pointer-events-none`
                 : ""
             }`}

@@ -1,9 +1,9 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import LandingPage from "./pages/LandingPage";
-import LoginPage, { action as loginAction } from "./pages/LoginPage";
+import LoginPage from "./pages/LoginPage";
 import RegisterPage, { action as registerAction } from "./pages/RegisterPage";
-import RootLayout, { Loader } from "./pages/RootLayout";
+import RootLayout from "./pages/RootLayout";
 import FlightPage from "./pages/FlightPage";
 import AdminPage from "./pages/adminSection/AdminPage";
 import AdminFlight from "./pages/adminSection/AdminFlight";
@@ -24,7 +24,6 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    loader: Loader,
     errorElement: <ErrorPage />,
     children: [
       {
@@ -34,7 +33,6 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <LoginPage />,
-        action: loginAction,
       },
       {
         path: "register",
@@ -47,6 +45,7 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <FlightPage />,
+            // loader: OnBoardListLoader,
           },
           {
             path: "flight-results",
@@ -69,7 +68,7 @@ const router = createBrowserRouter([
                 element: <OnBoardListPage />,
               },
               {
-                path: "conform",
+                path: "passengers",
                 element: <OnBoardPassengerPage />,
               },
             ],

@@ -4,13 +4,11 @@ const passengerSlice = createSlice({
   name: "passenger",
   initialState: {
     passengerList: [],
-    passenger: null,
   },
   reducers: {
     setPassenger(state, action) {
-      const { passengerDetails } = action.payload;
       console.log("WOOOOO ====>", action.payload);
-      state.passenger = passengerDetails;
+      state.passengerList = action.payload.allPassengers;
     },
   },
 });

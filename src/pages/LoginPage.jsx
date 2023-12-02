@@ -8,30 +8,30 @@ const LoginPage = () => {
 
 export default LoginPage;
 
-export const action = async ({ request }) => {
-  try {
-    const data = await request.formData();
+// export const action = async ({ request }) => {
+//   try {
+//     const data = await request.formData();
 
-    const loginData = {
-      email: data.get("email"),
-      password: data.get("password"),
-    };
+//     const loginData = {
+//       email: data.get("email"),
+//       password: data.get("password"),
+//     };
 
-    const response = await axios.post(
-      "http://localhost:8000/api/user/login",
-      loginData
-    );
+//     const response = await axios.post(
+//       "http://localhost:8000/api/user/login",
+//       loginData
+//     );
 
-    const token = response.data.data.token;
+//     const token = response.data.data.token;
 
-    localStorage.setItem("token", token);
+//     localStorage.setItem("token", token);
 
-    const expiration = new Date();
-    expiration.setHours(expiration.getHours() + 1);
-    localStorage.setItem("expiration", expiration.toISOString());
+//     const expiration = new Date();
+//     expiration.setHours(expiration.getHours() + 1);
+//     localStorage.setItem("expiration", expiration.toISOString());
 
-    return redirect("/");
-  } catch (error) {
-    return error.response;
-  }
-};
+//     return redirect("/");
+//   } catch (error) {
+//     return error.response;
+//   }
+// };

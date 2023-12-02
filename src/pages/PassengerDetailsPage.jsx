@@ -1,50 +1,9 @@
-import { useActionData, useLocation, useNavigate } from "react-router-dom";
+import { redirect } from "react-router-dom";
 import PassengerDetails from "../components/PassengerDetails";
-import { useDispatch, useSelector } from "react-redux";
-import { setPassenger } from "../store/passenger-slice";
+import axios from "axios";
+import { getAuthToken } from "../utils/auth";
 
 const PassengerDetailsPage = () => {
-  const flights = useSelector((state) => state.flights.flights);
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-
-  const flightId = queryParams.get("flightId");
-  const flightClass = queryParams.get("class");
-  const price = queryParams.get("price");
-  const departureDate = queryParams.get("date");
-
-  const specificFlight = flights.filter((flight) => flight._id === flightId);
-
-  const passengerData = useActionData();
-
-  const navigate = useNavigate();
-
-  if (passengerData) {
-    const passengerDetails = {
-      full_name: passengerData.fullName,
-      date_of_birth: passengerData.dob,
-      gender: passengerData.gender,
-      nationality: passengerData.nationality,
-      panCard: passengerData.panCard,
-      phone: passengerData.phone,
-      email: passengerData.email,
-      departureDest: specificFlight[0].departureDestination,
-      arrivalDest: specificFlight[0].arrivalDestination,
-      flightClass: flightClass,
-      airLine: specificFlight[0].airline,
-      departureTime: specificFlight[0].timeOfDeparture,
-      arrivalTime: specificFlight[0].timeOfArrival,
-      departureDate: departureDate,
-      price: price,
-    };
-
-    setTimeout(() => {
-      console.log("PASSENGER DATA ===>", passengerDetails);
-      dispatch(setPassenger({ passengerDetails }));
-      navigate("/flights/show-passenger");
-    }, 1000);
-  }
   return <PassengerDetails />;
 };
 
@@ -53,19 +12,40 @@ export default PassengerDetailsPage;
 export const action = async ({ request }) => {
   try {
     const data = await request.formData();
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // Get values by key
+    const flightId = urlParams.get("flightId");
+    const travelClass = urlParams.get("class");
+    const price = urlParams.get("price");
+    const date = urlParams.get("date");
 
     const passengerData = {
-      fullName: data.get("fullName"),
-      dob: data.get("dob"),
+      full_name: data.get("fullName"),
+      date_of_birth: data.get("dob"),
       gender: data.get("gender"),
       nationality: data.get("nationality"),
       panCard: data.get("panCard"),
       phone: data.get("phone"),
       email: data.get("email"),
+      flightClass: travelClass,
+      departureDate: date,
+      price: price,
+      flightId: flightId,
     };
 
-    return passengerData;
+    const token = getAuthToken();
+    await axios.post("http://localhost:8000/api/passenger/add", passengerData, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+
+    // console.log(response.data);
+
+    return redirect("/flights");
   } catch (error) {
+    console.log(error);
     return error;
   }
 };
