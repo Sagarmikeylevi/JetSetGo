@@ -1,11 +1,55 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { getAuthToken } from "../utils/auth";
+import { deletePass } from "../store/passenger-slice";
 
-const ShowPassenger = ({passenger}) => {
-  console.log("PASSENGER ===>", passenger);
-  // useEffect(())
-  
+const ShowPassenger = ({ bookingDetails }) => {
+  const [termsAndConditions, setTermsAndConditions] = useState(false);
+  const token = getAuthToken();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const deletePassenger = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/passenger/delete/${id}`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+      dispatch(deletePass({ id }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const conformPassenger = async (id) => {
+    try {
+      await axios.put(
+        `http://localhost:8000/api/passenger/conform/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const cancelHandler = () => {
+    deletePassenger(bookingDetails._id);
+    navigate("/flights");
+  };
+
+  const conformHandler = () => {
+    conformPassenger(bookingDetails._id);
+    navigate("/flights");
+  };
+
   return (
     <div className="h-[95vh] w-[95%] max-w-[40rem] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-white shadow-md rounded-md">
       <div className="absolute top-2 left-[50%] translate-x-[-50%] flex flex-row space-x-2 items-center h-[8%]">
@@ -48,30 +92,38 @@ const ShowPassenger = ({passenger}) => {
           </div>
 
           <div className="w-[60%] h-full flex flex-col space-y-2 items-start text-xs text-white">
-            <p className="px-3 py-2 bg-green-600 rounded-r-md w-full">
-              Sagar Das
+            <p className="px-3 py-2 bg-green-600 rounded-r-md w-full capitalize">
+              {bookingDetails.name}
             </p>
             <p className="px-3 py-2 bg-green-600 rounded-r-md w-full">
-              16-09-1999
+              {bookingDetails.dob}
             </p>
-            <p className="px-3 py-2 bg-green-600 rounded-r-md w-full">Male</p>
-            <p className="px-3 py-2 bg-green-600 rounded-r-md w-full">Indian</p>
-            <p className="px-3 py-2 bg-green-600 rounded-r-md w-full">
-              ABCD12345F
+            <p className="px-3 py-2 bg-green-600 rounded-r-md w-full capitalize">
+              {bookingDetails.sex}
             </p>
-            <p className="px-3 py-2 bg-green-600 rounded-r-md w-full">
-              8777318537
+            <p className="px-3 py-2 bg-green-600 rounded-r-md w-full capitalize">
+              {bookingDetails.nationality}
             </p>
             <p className="px-3 py-2 bg-green-600 rounded-r-md w-full">
-              sagarmikeylevi@gmail.com
-            </p>
-            <p className="px-3 py-2 bg-green-600 rounded-r-md w-full">Kochi</p>
-            <p className="px-3 py-2 bg-green-600 rounded-r-md w-full">Mumbai</p>
-            <p className="px-3 py-2 bg-green-600 rounded-r-md w-full">
-              Premium-Economy
+              {bookingDetails.panCard}
             </p>
             <p className="px-3 py-2 bg-green-600 rounded-r-md w-full">
-              Friday, 20th Nov, 2023
+              {bookingDetails.phoneNo}
+            </p>
+            <p className="px-3 py-2 bg-green-600 rounded-r-md w-full">
+              {bookingDetails.email}
+            </p>
+            <p className="px-3 py-2 bg-green-600 rounded-r-md w-full capitalize">
+              {bookingDetails.departure}
+            </p>
+            <p className="px-3 py-2 bg-green-600 rounded-r-md w-full capitalize">
+              {bookingDetails.arrival}
+            </p>
+            <p className="px-3 py-2 bg-green-600 rounded-r-md w-full capitalize">
+              {bookingDetails.class}
+            </p>
+            <p className="px-3 py-2 bg-green-600 rounded-r-md w-full">
+              {bookingDetails.date}
             </p>
           </div>
         </div>
@@ -89,37 +141,66 @@ const ShowPassenger = ({passenger}) => {
           <div className="w-[60%] h-full flex flex-col space-y-2 items-start text-xs text-white">
             {/* Replace the placeholder values with your actual flight price, GST, and total amount */}
             <p className="px-3 py-2 bg-yellow-500 rounded-r-md w-full">
-              &#8377; 5000
+              &#8377; {bookingDetails.price}
             </p>
             <p className="px-3 py-2 bg-yellow-500 rounded-r-md w-full">
-              &#8377; 900
+              &#8377; {bookingDetails.price * 0.18}
             </p>
             <p className="px-3 py-2 bg-yellow-500 rounded-r-md w-full">
-              &#8377; 5900
+              &#8377; {bookingDetails.price + bookingDetails.price * 0.18}
             </p>
           </div>
         </div>
 
         {/* here terms and conditions */}
-        <div className="w-full h-[12%] flex items-center justify-center">
-          <input type="checkbox" id="agreeCheckbox" className="mr-2" />
-          <label htmlFor="agreeCheckbox" className="text-sm text-gray-700">
-            I agree to the{" "}
-            <span className="text-green-500 cursor-pointer underline">
-              Terms and Conditions
-            </span>
-          </label>
-        </div>
+        {bookingDetails.status === "Not Confirmed" && (
+          <div className="w-full h-[12%] flex items-center justify-center">
+            <input
+              type="checkbox"
+              id="agreeCheckbox"
+              className="mr-2"
+              onClick={() => setTermsAndConditions((prev) => !prev)}
+            />
+            <label htmlFor="agreeCheckbox" className="text-sm text-gray-700">
+              I agree to the{" "}
+              <span className="text-green-500 cursor-pointer underline">
+                Terms and Conditions
+              </span>
+            </label>
+          </div>
+        )}
       </div>
 
-      <div className="absolute top-[88%] w-full h-[12%] bg-[#e6ffe6] shadow-lg flex flex-row space-x-4 justify-end items-center px-4">
-        <Link to="" className="px-4 py-2 bg-green-500 text-white rounded-md">
-          Conform
-        </Link>
+      <div className="absolute top-[88%] w-full h-[12%] bg-[#e6ffe6] shadow-lg flex flex-row space-x-4 justify-end items-center px-4 ">
+        {bookingDetails.status === "Not Confirmed" && (
+          <button
+            className={`px-4 py-2 bg-yellow-500 text-white rounded-md ${
+              termsAndConditions
+                ? "cursor-pointer hover:bg-black"
+                : "pointer-events-none"
+            }`}
+            onClick={conformHandler}
+          >
+            Conform
+          </button>
+        )}
 
-        <Link to="" className="px-4 py-2 bg-black text-white rounded-md">
-          Cancel
-        </Link>
+        {bookingDetails.status === "Confirmed" && (
+          <Link
+            to="/flights"
+            className="px-4 py-2 bg-yellow-500 text-white rounded-md 
+                cursor-pointer hover:bg-black"
+          >
+            Go Back
+          </Link>
+        )}
+
+        <button
+          className="px-4 py-2 bg-red-400 text-white rounded-md hover:bg-black"
+          onClick={cancelHandler}
+        >
+          {bookingDetails.status === "Not Confirmed" ? "Cancel" : "Delete"}
+        </button>
       </div>
     </div>
   );

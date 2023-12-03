@@ -1,63 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { Outlet, useLoaderData } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Outlet } from "react-router-dom";
 import axios from "axios";
 import Navigation from "../components/Navigation";
-import { getAuthToken, getTokenDuration } from "../utils/auth";
+import { getTokenDuration } from "../utils/auth";
 import { setUser, logout } from "../store/user-slice";
 import { setFlights } from "../store/flight-slice";
+import Error from "../components/UI/Error";
 
 const RootLayout = () => {
-  // let user = null;
-  // let flights = null;
-  // const token = getAuthToken();
-  // const response = useLoaderData();
-  // const dispatch = useDispatch();
-  // const statusCode = response.status;
-
-  // useEffect(() => {
-  //   if (statusCode !== 200) {
-  //     // console.log(response.data.message);
-  //   } else {
-  //     user = response.data.user;
-  //     flights = response.data.flights;
-  //   }
-
-  //   dispatch(setUser({ user }));
-  //   dispatch(setFlights({ flights }));
-  // }, [statusCode, response]);
-
-  // useEffect(() => {
-  //   if (!token) {
-  //     return;
-  //   }
-
-  //   if (token === "EXPIRED") {
-  //     dispatch(logout());
-  //     return;
-  //   }
-
-  //   const tokenDuration = getTokenDuration();
-  //   console.log(tokenDuration);
-
-  //   setTimeout(() => {
-  //     dispatch(logout());
-  //   }, tokenDuration);
-  // }, [token]);
-
-  // console.log(response);
+  const token = useSelector((state) => state.user.token);
+  const AllFlights = useSelector((state) => state.flights.flights);
+  const [logoutMsg, setLogOutMsg] = useState(false);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const token = getAuthToken();
-    // console.log("TOKEN Root===>", token);
     if (!token) {
       return;
     }
     if (token === "EXPIRED") {
       dispatch(logout());
+      setLogOutMsg(true);
       return;
+    }
+
+    if (token) {
+      setLogOutMsg(false);
     }
 
     const tokenDuration = getTokenDuration();
@@ -65,6 +34,7 @@ const RootLayout = () => {
 
     setTimeout(() => {
       dispatch(logout());
+      setLogOutMsg(true);
     }, tokenDuration);
     const getUser = async (token) => {
       try {
@@ -86,8 +56,32 @@ const RootLayout = () => {
       }
     };
 
+    const fetchFlight = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/flight/getFlights",
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+
+        // console.log("FLIGHT ===>", response.data.flights);
+        const flights = response.data.flights;
+        dispatch(setFlights({ flights }));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     getUser(token);
-  }, []);
+    fetchFlight();
+  }, [token]);
+
+  if (logoutMsg) {
+    return <Error message="Logged Out!" />;
+  }
 
   return (
     <>
@@ -101,44 +95,3 @@ const RootLayout = () => {
 };
 
 export default RootLayout;
-
-// export const Loader = async () => {
-//   try {
-//     const token = getAuthToken();
-
-//     if (!token)
-//       return { status: 500, data: { message: "Could not find the token" } };
-
-//     const responseOne = await axios.get(
-//       "http://localhost:8000/api/user/getUser",
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: "Bearer " + token,
-//         },
-//       }
-//     );
-
-//     const responseTwo = await axios.get(
-//       "http://localhost:8000/api/flight/getFlights",
-//       {
-//         headers: {
-//           Authorization: "Bearer " + token,
-//         },
-//       }
-//     );
-
-//     return {
-//       status: 200,
-//       data: {
-//         user: responseOne.data.userDetails,
-//         flights: responseTwo.data.flights,
-//       },
-//     };
-//   } catch (error) {
-//     return {
-//       status: error.response.status,
-//       data: { message: error.message },
-//     };
-//   }
-// };

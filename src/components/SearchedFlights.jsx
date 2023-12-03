@@ -91,7 +91,7 @@ const SearchedFlights = ({ data }) => {
               key={index}
               className={`h-full w-[15%] max-w-[6rem] ${
                 index === 0 ? "bg-green-900" : "bg-green-600 opacity-70"
-              }  rounded-md shadow-md flex flex-col text-white justify-center items-center`}
+              }  rounded-md shadow-md flex flex-col text-white justify-center items-center cursor-pointer`}
               onClick={() => handleSearchFlights(date)}
             >
               <p className="text-2xl font-semibold">{date.getDate()}</p>

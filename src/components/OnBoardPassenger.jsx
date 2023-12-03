@@ -1,5 +1,6 @@
 import React from "react";
 import Card from "./UI/Card";
+import { Link } from "react-router-dom";
 
 const OnBoardPassenger = ({ passengers }) => {
   return (
@@ -25,11 +26,16 @@ const OnBoardPassenger = ({ passengers }) => {
               key={passenger._id}
             >
               <p>{passenger.full_name}</p>
-              <img
-                src="https://cdn-icons-png.flaticon.com/128/1294/1294758.png"
-                alt="arrow_right"
+              <Link
+                to={`/flights/show-passenger?id=${passenger._id}`}
                 className="w-8 absolute left-[95%] translate-x-[-95%] cursor-pointer"
-              />
+              >
+                <img
+                  src="https://cdn-icons-png.flaticon.com/128/1294/1294758.png"
+                  alt="arrow_right"
+                  className="w-full"
+                />
+              </Link>
             </div>
           ))}
         </div>

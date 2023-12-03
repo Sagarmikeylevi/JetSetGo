@@ -10,9 +10,15 @@ const passengerSlice = createSlice({
       console.log("WOOOOO ====>", action.payload);
       state.passengerList = action.payload.allPassengers;
     },
+    deletePass(state, action) {
+      const { id } = action.payload.id;
+      state.passengerList = state.passengerList.filter(
+        (passenger) => passenger._id !== id
+      );
+    },
   },
 });
 
-export const { setPassenger } = passengerSlice.actions;
+export const { setPassenger, deletePass } = passengerSlice.actions;
 
 export default passengerSlice;

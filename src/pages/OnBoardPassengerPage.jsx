@@ -7,15 +7,15 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 const OnBoardPassengerPage = () => {
-  const [filteredPassengers, setFilteredPassengers] = useState([]);
+  const [conformPass, setConformPass] = useState([]);
+  const [nonconformPass, setNonconformPass] = useState([]);
+
   const passengers = useSelector((state) => state.passenger.passengerList);
-  console.log("Passengers ===>", passengers);
+
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
   const isConform = queryParams.get("isConform");
-
-  console.log("IS CONFORM ===>", isConform);
 
   const dispatch = useDispatch();
   const token = getAuthToken();
@@ -43,20 +43,22 @@ const OnBoardPassengerPage = () => {
   }, []);
 
   useEffect(() => {
-    if (isConform === true) {
+    if (isConform === "true") {
       const conformPassengerList = passengers.filter(
         (pass) => pass.status !== "Not Confirmed"
       );
-      setFilteredPassengers(conformPassengerList);
+      setConformPass(conformPassengerList);
     } else {
       const nonConformPassengerList = passengers.filter(
         (pass) => pass.status === "Not Confirmed"
       );
-      setFilteredPassengers(nonConformPassengerList);
+
+      setNonconformPass(nonConformPassengerList);
     }
   }, [passengers, isConform]);
 
-  console.log("FILTERED PASSENGERS ===>", filteredPassengers);
+  const filteredPassengers =
+    isConform === "true" ? conformPass : nonconformPass;
 
   return <OnBoardPassenger passengers={filteredPassengers} />;
 };

@@ -41,8 +41,6 @@ export const action = async ({ request }) => {
       },
     });
 
-    // console.log(response.data);
-
     return redirect("/flights");
   } catch (error) {
     console.log(error);

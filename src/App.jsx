@@ -19,6 +19,9 @@ import PassengerDetailsPage, {
 import ShowPassengerPage from "./pages/ShowPassengerPage";
 import OnBoardListPage from "./pages/OnBoardListPage";
 import OnBoardPassengerPage from "./pages/OnBoardPassengerPage";
+import UnAuthPage from "./pages/UnAuthPage";
+import { checkAuthLoader } from "./utils/auth";
+import HotelsPage from "./pages/HotelsPage";
 
 const router = createBrowserRouter([
   {
@@ -40,25 +43,31 @@ const router = createBrowserRouter([
         action: registerAction,
       },
       {
+        path: "hotels",
+        element: <HotelsPage />,
+      },
+      {
         path: "flights",
         children: [
           {
             index: true,
             element: <FlightPage />,
-            // loader: OnBoardListLoader,
           },
           {
             path: "flight-results",
             element: <SearchedFlightsPage />,
+            loader: checkAuthLoader,
           },
           {
             path: "passenger-details",
             element: <PassengerDetailsPage />,
             action: passengerAction,
+            loader: checkAuthLoader,
           },
           {
             path: "show-passenger",
             element: <ShowPassengerPage />,
+            loader: checkAuthLoader,
           },
           {
             path: "on-board-list",
@@ -66,10 +75,12 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <OnBoardListPage />,
+                loader: checkAuthLoader,
               },
               {
                 path: "passengers",
                 element: <OnBoardPassengerPage />,
+                loader: checkAuthLoader,
               },
             ],
           },
@@ -81,6 +92,7 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <AdminPage />,
+            loader: checkAuthLoader,
           },
           {
             path: "flight",
@@ -89,26 +101,34 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <AdminFlight />,
+                loader: checkAuthLoader,
               },
               {
                 path: "addFlight",
                 element: <AddFlightFormPage />,
                 action: addFlightAction,
+                loader: checkAuthLoader,
               },
               {
                 path: ":flightID",
                 element: <FlightDetailsPage />,
+                loader: checkAuthLoader,
               },
               {
                 path: "update/:id",
                 element: <AddFlightFormPage />,
                 action: addFlightAction,
+                loader: checkAuthLoader,
               },
             ],
           },
         ],
       },
     ],
+  },
+  {
+    path: "/unAuth",
+    element: <UnAuthPage />,
   },
 ]);
 
