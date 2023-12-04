@@ -12,7 +12,7 @@ const Flight = () => {
   const [destinationQuery, setDestinationQuery] = useState("");
   const [isDepartureDest, setIsDepartureDest] = useState(false);
   const [isArrivalDest, setIsArrivalDest] = useState(false);
-  const [departureDest, setDepartureDest] = useState("New Delhi");
+  const [departureDest, setDepartureDest] = useState("Delhi");
   const [arrivalDest, setArrivalDest] = useState("Mumbai");
   const [departureDate, setDepartureDate] = useState(new Date());
   const [selectedClass, setSelectedClass] = useState("Economy");

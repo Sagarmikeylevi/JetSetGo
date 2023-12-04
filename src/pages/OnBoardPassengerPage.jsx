@@ -5,8 +5,10 @@ import { getAuthToken } from "../utils/auth";
 import { setPassenger } from "../store/passenger-slice";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import Loading from "../components/UI/Loading";
 
 const OnBoardPassengerPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [conformPass, setConformPass] = useState([]);
   const [nonconformPass, setNonconformPass] = useState([]);
 
@@ -22,7 +24,7 @@ const OnBoardPassengerPage = () => {
   const fetchPassengers = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/passenger/getAllPassengers",
+        "https://jetsetgoapi123.onrender.com/api/passenger/getAllPassengers",
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -40,6 +42,11 @@ const OnBoardPassengerPage = () => {
 
   useEffect(() => {
     fetchPassengers();
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
   }, []);
 
   useEffect(() => {
@@ -56,6 +63,10 @@ const OnBoardPassengerPage = () => {
       setNonconformPass(nonConformPassengerList);
     }
   }, [passengers, isConform]);
+
+  if (isLoading) {
+    return <Loading message="Fetching Passengers..." />;
+  }
 
   const filteredPassengers =
     isConform === "true" ? conformPass : nonconformPass;

@@ -35,13 +35,17 @@ export const action = async ({ request }) => {
     };
 
     const token = getAuthToken();
-    await axios.post("http://localhost:8000/api/passenger/add", passengerData, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    });
+    await axios.post(
+      "https://jetsetgoapi123.onrender.com/api/passenger/add",
+      passengerData,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
 
-    return redirect("/flights");
+    return redirect("/flights/on-board-list");
   } catch (error) {
     console.log(error);
     return error;

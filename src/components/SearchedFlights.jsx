@@ -1,8 +1,11 @@
 import { useSelector } from "react-redux";
 import Card from "./UI/Card";
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import Loading from "./UI/Loading";
 
 const SearchedFlights = ({ data }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const prices = useSelector((state) => state.flights.prices);
   const flight_class = data[0].searchDetails.flightClass.toLowerCase();
   const navigate = useNavigate();
@@ -38,6 +41,12 @@ const SearchedFlights = ({ data }) => {
   }).filter((date) => date !== null);
 
   const handleSearchFlights = (departureDate) => {
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
     const departure_date = departureDate.toLocaleDateString("en-IN", {
       day: "2-digit",
       month: "2-digit",
@@ -49,6 +58,10 @@ const SearchedFlights = ({ data }) => {
 
     navigate(`/flights/${url}`);
   };
+
+  if (isLoading) {
+    return <Loading message="Fetching Flights..." />;
+  }
 
   return (
     <Card className="h-[95vh] w-[95vw] bg-white rounded-md absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] shadow-xl">
@@ -103,7 +116,7 @@ const SearchedFlights = ({ data }) => {
         </div>
         {/* section - 2 end */}
         {/* section - 3*/}
-        <div className="h-[60%] w-[95%] flex flex-col space-y-2 items-center p-4 bg-[#e6e6e6] rounded-md relative">
+        <div className="max-h-[60%] w-[95%] flex flex-col space-y-2 items-center p-4 bg-[#e6e6e6] rounded-md overflow-hidden hover:overflow-y-auto scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent relative">
           {data[1].searchFlights.searchedFlights.length === 0 && (
             <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-xl text-gray-600 font-semibold uppercase">
               No Flights{" "}

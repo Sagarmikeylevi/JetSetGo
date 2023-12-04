@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import heroIcon from "../assets/hero_icon.png";
 import Card from "./UI/Card";
 
@@ -22,9 +23,12 @@ const Home = () => {
           </div>
 
           <div className="md:absolute left-6 bottom-[-1rem] lg:bottom-0">
-            <p className="py-2 px-4 bg-green-600 text-white rounded-md hover:bg-black transition-all duration-200 cursor-pointer lg:px-6">
+            <Link
+              to="/flights"
+              className="py-2 px-4 bg-green-600 text-white rounded-md hover:bg-black transition-all duration-200 cursor-pointer lg:px-6"
+            >
               Book Now
-            </p>
+            </Link>
           </div>
         </div>
 

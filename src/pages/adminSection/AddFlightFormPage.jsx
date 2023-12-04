@@ -71,7 +71,7 @@ export const action = async ({ request }) => {
       const Id = UrlParts[UrlParts.length - 1];
 
       response = await axios.put(
-        `http://localhost:8000/api/flight/update/${Id}`,
+        `https://jetsetgoapi123.onrender.com/api/flight/update/${Id}`,
         flightData,
         {
           headers: {
@@ -81,14 +81,14 @@ export const action = async ({ request }) => {
       );
     } else {
        response = await axios.post(
-        "http://localhost:8000/api/flight/add",
-        flightData,
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+         "https://jetsetgoapi123.onrender.com/api/flight/add",
+         flightData,
+         {
+           headers: {
+             Authorization: "Bearer " + token,
+           },
+         }
+       );
     }
 
     return redirect("/dashboard/flight");

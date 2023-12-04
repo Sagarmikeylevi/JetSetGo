@@ -39,7 +39,7 @@ const RootLayout = () => {
     const getUser = async (token) => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/user/getUser",
+          "https://jetsetgoapi123.onrender.com/api/user/getUser",
           {
             headers: {
               "Content-Type": "application/json",
@@ -59,7 +59,7 @@ const RootLayout = () => {
     const fetchFlight = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/flight/getFlights",
+          "https://jetsetgoapi123.onrender.com/api/flight/getFlights",
           {
             headers: {
               Authorization: "Bearer " + token,

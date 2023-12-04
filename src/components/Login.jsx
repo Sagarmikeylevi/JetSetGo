@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  Link,
-  Form,
-  useNavigation,
-  useActionData,
-  useNavigate,
-} from "react-router-dom";
+import { Link, Form, useNavigation, useNavigate } from "react-router-dom";
 import Error from "./UI/Error";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -14,14 +8,13 @@ import { setToken } from "../store/user-slice";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isError, setIsError] = useState({
+    error: false,
+    message: "",
+  });
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const navigate = useNavigate();
-  // const response = useActionData();
-
-  // if (response) {
-  //   return <Error message={response.data.error} />;
-  // }
 
   const loginHandler = (e) => {
     e.preventDefault();
@@ -36,7 +29,7 @@ const Login = () => {
     const SendLoginData = async (data) => {
       try {
         const response = await axios.post(
-          "http://localhost:8000/api/user/login",
+          "https://jetsetgoapi123.onrender.com/api/user/login",
           data
         );
 
@@ -46,12 +39,20 @@ const Login = () => {
 
         navigate("/");
       } catch (error) {
-        console.log(error);
+        console.log("What's going on ??", error);
+        setIsError({
+          error: true,
+          message: error.response.data.error,
+        });
       }
     };
 
     SendLoginData(loginData);
   };
+
+  if (isError.error) {
+    return <Error message={isError.message} />;
+  }
 
   const isSubmitting =
     navigation.state === "submitting" || navigation.state === "loading";

@@ -1,11 +1,25 @@
 import { useLocation } from "react-router-dom";
 import SearchedFlights from "../components/SearchedFlights";
 import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import Loading from "../components/UI/Loading";
 
 const SearchedFlightsPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
   const flights = useSelector((state) => state.flights.flights);
-  
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
+  if (isLoading) {
+    return <Loading message="Fetching Flights..." />;
+  }
 
   const queryParams = new URLSearchParams(location.search);
 

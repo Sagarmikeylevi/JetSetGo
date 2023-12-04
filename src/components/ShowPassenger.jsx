@@ -4,20 +4,25 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { getAuthToken } from "../utils/auth";
 import { deletePass } from "../store/passenger-slice";
+import Loading from "./UI/Loading";
 
 const ShowPassenger = ({ bookingDetails }) => {
   const [termsAndConditions, setTermsAndConditions] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const token = getAuthToken();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const deletePassenger = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/passenger/delete/${id}`, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      });
+      await axios.delete(
+        `https://jetsetgoapi123.onrender.com/api/passenger/delete/${id}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
       dispatch(deletePass({ id }));
     } catch (error) {
       console.log(error);
@@ -27,7 +32,7 @@ const ShowPassenger = ({ bookingDetails }) => {
   const conformPassenger = async (id) => {
     try {
       await axios.put(
-        `http://localhost:8000/api/passenger/conform/${id}`,
+        `https://jetsetgoapi123.onrender.com/api/passenger/conform/${id}`,
         {},
         {
           headers: {
@@ -41,14 +46,23 @@ const ShowPassenger = ({ bookingDetails }) => {
   };
 
   const cancelHandler = () => {
-    deletePassenger(bookingDetails._id);
-    navigate("/flights");
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+      deletePassenger(bookingDetails._id);
+      navigate("/flights");
+    }, 2000);
   };
 
   const conformHandler = () => {
     conformPassenger(bookingDetails._id);
     navigate("/flights");
   };
+
+  if (isLoading) {
+    return <Loading message="Deleting...." />;
+  }
 
   return (
     <div className="h-[95vh] w-[95%] max-w-[40rem] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-white shadow-md rounded-md">

@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "./UI/Card";
 import { Link } from "react-router-dom";
 
 const OnBoardPassenger = ({ passengers }) => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredPassengers = passengers.filter((passenger) =>
+    passenger.full_name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <Card className="h-[95vh] w-[95vw] bg-white rounded-md absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] shadow-xl">
       <div className="mt-2 w-[90%] h-[75%] absolute top-[15%] md:top-[12%] left-[50%] translate-x-[-50%]">
@@ -16,11 +22,18 @@ const OnBoardPassenger = ({ passengers }) => {
             type="text"
             className="w-[90%] h-full px-2 placeholder:text-green-800 text-green-700 border-none outline-none placeholder:font-thin bg-transparent"
             placeholder="Search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
 
         <div className="absolute left-[50%] translate-x-[-50%] top-[20%] w-[80%] max-w-[30rem] max-h-[80%] py-4 flex flex-col space-y-4 overflow-hidden hover:overflow-y-auto scrollbar-thin scrollbar-thumb-[#ffff80] scrollbar-track-transparent px-4">
-          {passengers.map((passenger) => (
+          {filteredPassengers.length === 0 && (
+            <p className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-green-950 font-bold text-2xl opacity-80">
+              No Passengers
+            </p>
+          )}
+          {filteredPassengers.map((passenger) => (
             <div
               className="w-full min-h-[3.5rem] rounded-md bg-green-500 flex items-center px-4 text-white text-xl font-thin uppercase tracking-wide relative"
               key={passenger._id}
