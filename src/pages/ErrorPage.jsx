@@ -1,4 +1,5 @@
-import ShowError from "../components/showError";
+const ShowError = React.lazy(() => import("../components/ShowError"));
+import React, { Suspense } from "react";
 import { useRouteError } from "react-router-dom";
 
 const ErrorPage = () => {
@@ -15,7 +16,17 @@ const ErrorPage = () => {
     title = "Not found!";
     message = "Could not find resource or page."; // Updates the title and message if the error status is 404
   }
-  return <ShowError title={title} message={message} />;
+  return (
+    <Suspense
+      fallback={
+        <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+          Loading....
+        </p>
+      }
+    >
+      <ShowError title={title} message={message} />
+    </Suspense>
+  );
 };
 
 export default ErrorPage;
