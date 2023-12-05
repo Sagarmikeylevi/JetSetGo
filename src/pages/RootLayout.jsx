@@ -8,76 +8,73 @@ import { setUser, logout } from "../store/user-slice";
 import { setFlights } from "../store/flight-slice";
 import Error from "../components/UI/Error";
 
+const api = axios.create({
+  baseURL: "https://jetsetgoapi123.onrender.com/api/",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+const API_BASE_URL = "https://jetsetgoapi123.onrender.com/api/";
+
 const RootLayout = () => {
   const token = useSelector((state) => state.user.token);
-  const AllFlights = useSelector((state) => state.flights.flights);
   const [logoutMsg, setLogOutMsg] = useState(false);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
+    let logoutTimer;
+
+    const getUser = async (token) => {
+      try {
+        const response = await api.get("user/getUser", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const user = response.data.userDetails;
+        dispatch(setUser({ user }));
+      } catch (error) {
+        console.log("Error fetching user:", error);
+      }
+    };
+
+    const fetchFlight = async () => {
+      try {
+        const response = await api.get("flight/getFlights", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const flights = response.data.flights;
+        dispatch(setFlights({ flights }));
+      } catch (error) {
+        console.log("Error fetching flights:", error);
+      }
+    };
+
     if (!token) {
       return;
     }
+
     if (token === "EXPIRED") {
       dispatch(logout());
       setLogOutMsg(true);
       return;
     }
 
-    if (token) {
-      setLogOutMsg(false);
-    }
+    setLogOutMsg(false);
 
     const tokenDuration = getTokenDuration();
-    console.log(tokenDuration);
 
-    setTimeout(() => {
+    logoutTimer = setTimeout(() => {
       dispatch(logout());
       setLogOutMsg(true);
     }, tokenDuration);
-    const getUser = async (token) => {
-      try {
-        const response = await axios.get(
-          "https://jetsetgoapi123.onrender.com/api/user/getUser",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
-
-        const user = response.data.userDetails;
-
-        dispatch(setUser({ user }));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    const fetchFlight = async () => {
-      try {
-        const response = await axios.get(
-          "https://jetsetgoapi123.onrender.com/api/flight/getFlights",
-          {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
-
-        // console.log("FLIGHT ===>", response.data.flights);
-        const flights = response.data.flights;
-        dispatch(setFlights({ flights }));
-      } catch (error) {
-        console.log(error);
-      }
-    };
 
     getUser(token);
     fetchFlight();
-  }, [token]);
+
+    return () => clearTimeout(logoutTimer);
+  }, [token, dispatch]);
 
   if (logoutMsg) {
     return <Error message="Logged Out!" />;

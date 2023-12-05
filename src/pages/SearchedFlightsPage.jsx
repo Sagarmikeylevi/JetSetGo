@@ -36,20 +36,12 @@ const SearchedFlightsPage = () => {
   const weekDay = combinedDate[0];
   const flightDate = combinedDate[combinedDate.length - 1];
 
-  const dateQuery = flightDate.split("/");
-
-  // console.log(departure.toLowerCase());
-
-  console.log(flights.filter((flight) => flight.datesOfDeparture.includes(21)));
-
   const searchedFlights = flights.filter(
     (flight) =>
       flight.departureDestination.toLowerCase() === departure.toLowerCase() &&
       flight.arrivalDestination.toLowerCase() === arrival.toLowerCase() &&
       flight.datesOfDeparture.includes(21)
   );
-
-  console.log(searchedFlights);
 
   const data = [
     {

@@ -31,6 +31,7 @@ const Dashboard = () => {
             alt="flight_icon"
             className="h-[80%] w-[100%]"
           />
+
           <Link
             to="flight"
             className="py-4 px-8 cursor-pointer bg-green-400 text-white tracking-wide rounded-md flex items-center justify-center text-lg font-bold"

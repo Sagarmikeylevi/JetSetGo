@@ -1,41 +1,62 @@
+import React, { Suspense } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import LandingPage from "./pages/LandingPage";
-import LoginPage from "./pages/LoginPage";
+const LandingPage = React.lazy(() => import("./pages/LandingPage"));
+const LoginPage = React.lazy(() => import("./pages/LoginPage"));
 import RegisterPage, { action as registerAction } from "./pages/RegisterPage";
-import RootLayout from "./pages/RootLayout";
-import FlightPage from "./pages/FlightPage";
-import AdminPage from "./pages/adminSection/AdminPage";
-import AdminFlight from "./pages/adminSection/AdminFlight";
+const RootLayout = React.lazy(() => import("./pages/RootLayout"));
+const FlightPage = React.lazy(() => import("./pages/FlightPage"));
+const AdminPage = React.lazy(() => import("./pages/adminSection/AdminPage"));
+const AdminFlight = React.lazy(() =>
+  import("./pages/adminSection/AdminFlight")
+);
 import AddFlightFormPage, {
   action as addFlightAction,
 } from "./pages/adminSection/AddFlightFormPage";
-import ErrorPage from "./pages/ErrorPage";
-import FlightDetailsPage from "./pages/adminSection/FlightDetailsPage";
-import SearchedFlightsPage from "./pages/SearchedFlightsPage";
+const ErrorPage = React.lazy(() => import("./pages/ErrorPage"));
+const FlightDetailsPage = React.lazy(() =>
+  import("./pages/adminSection/FlightDetailsPage")
+);
+const SearchedFlightsPage = React.lazy(() =>
+  import("./pages/SearchedFlightsPage")
+);
 import PassengerDetailsPage, {
   action as passengerAction,
 } from "./pages/PassengerDetailsPage";
-import ShowPassengerPage from "./pages/ShowPassengerPage";
-import OnBoardListPage from "./pages/OnBoardListPage";
-import OnBoardPassengerPage from "./pages/OnBoardPassengerPage";
-import UnAuthPage from "./pages/UnAuthPage";
+const ShowPassengerPage = React.lazy(() => import("./pages/ShowPassengerPage"));
+const OnBoardListPage = React.lazy(() => import("./pages/OnBoardListPage"));
+const OnBoardPassengerPage = React.lazy(() =>
+  import("./pages/OnBoardPassengerPage")
+);
+const UnAuthPage = React.lazy(() => import("./pages/UnAuthPage"));
 import { checkAuthLoader } from "./utils/auth";
 import HotelsPage from "./pages/HotelsPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout />,
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <RootLayout />
+      </Suspense>
+    ),
     errorElement: <ErrorPage />,
     children: [
       {
         index: true,
-        element: <LandingPage />,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <LandingPage />
+          </Suspense>
+        ),
       },
       {
         path: "login",
-        element: <LoginPage />,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <LoginPage />
+          </Suspense>
+        ),
       },
       {
         path: "register",
@@ -51,11 +72,19 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <FlightPage />,
+            element: (
+              <Suspense fallback={<div>Loading...</div>}>
+                <FlightPage />
+              </Suspense>
+            ),
           },
           {
             path: "flight-results",
-            element: <SearchedFlightsPage />,
+            element: (
+              <Suspense fallback={<div>Loading...</div>}>
+                <SearchedFlightsPage />
+              </Suspense>
+            ),
             loader: checkAuthLoader,
           },
           {
@@ -66,7 +95,11 @@ const router = createBrowserRouter([
           },
           {
             path: "show-passenger",
-            element: <ShowPassengerPage />,
+            element: (
+              <Suspense fallback={<div>Loading...</div>}>
+                <ShowPassengerPage />
+              </Suspense>
+            ),
             loader: checkAuthLoader,
           },
           {
@@ -74,12 +107,20 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <OnBoardListPage />,
+                element: (
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <OnBoardListPage />,
+                  </Suspense>
+                ),
                 loader: checkAuthLoader,
               },
               {
                 path: "passengers",
-                element: <OnBoardPassengerPage />,
+                element: (
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <OnBoardPassengerPage />,
+                  </Suspense>
+                ),
                 loader: checkAuthLoader,
               },
             ],
@@ -91,7 +132,11 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <AdminPage />,
+            element: (
+              <Suspense fallback={<div>Loading...</div>}>
+                <AdminPage />
+              </Suspense>
+            ),
             loader: checkAuthLoader,
           },
           {
@@ -100,7 +145,11 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <AdminFlight />,
+                element: (
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <AdminFlight />
+                  </Suspense>
+                ),
                 loader: checkAuthLoader,
               },
               {
@@ -111,7 +160,11 @@ const router = createBrowserRouter([
               },
               {
                 path: ":flightID",
-                element: <FlightDetailsPage />,
+                element: (
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <FlightDetailsPage />
+                  </Suspense>
+                ),
                 loader: checkAuthLoader,
               },
               {
@@ -128,7 +181,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/unAuth",
-    element: <UnAuthPage />,
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <UnAuthPage />
+      </Suspense>
+    ),
   },
 ]);
 
