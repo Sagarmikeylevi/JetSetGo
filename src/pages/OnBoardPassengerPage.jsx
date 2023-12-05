@@ -1,9 +1,12 @@
+import React, { Suspense, useEffect, useState } from "react";
 import axios from "axios";
-import OnBoardPassenger from "../components/OnBoardPassenger";
+const OnBoardPassenger = React.lazy(() =>
+  import("../components/OnBoardPassenger")
+);
 import { useDispatch, useSelector } from "react-redux";
 import { getAuthToken } from "../utils/auth";
 import { setPassenger } from "../store/passenger-slice";
-import { useEffect, useState } from "react";
+
 import { useLocation } from "react-router-dom";
 import Loading from "../components/UI/Loading";
 
@@ -71,7 +74,17 @@ const OnBoardPassengerPage = () => {
   const filteredPassengers =
     isConform === "true" ? conformPass : nonconformPass;
 
-  return <OnBoardPassenger passengers={filteredPassengers} />;
+  return (
+    <Suspense
+      fallback={
+        <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+          Loading....
+        </p>
+      }
+    >
+      <OnBoardPassenger passengers={filteredPassengers} />
+    </Suspense>
+  );
 };
 
 export default OnBoardPassengerPage;

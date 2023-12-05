@@ -1,10 +1,23 @@
-import AddFlightForm from "../../components/dashboard/AddFlightForm";
+import React, { Suspense } from "react";
+const AddFlightForm = React.lazy(() =>
+  import("../../components/dashboard/AddFlightForm")
+);
 import axios from "axios";
 import { getAuthToken } from "../../utils/auth";
 import { redirect } from "react-router-dom";
 
 const AddFlightFormPage = () => {
-  return <AddFlightForm />;
+  return (
+    <Suspense
+      fallback={
+        <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+          Loading....
+        </p>
+      }
+    >
+      <AddFlightForm />
+    </Suspense>
+  );
 };
 
 export default AddFlightFormPage;
@@ -80,15 +93,15 @@ export const action = async ({ request }) => {
         }
       );
     } else {
-       response = await axios.post(
-         "https://jetsetgoapi123.onrender.com/api/flight/add",
-         flightData,
-         {
-           headers: {
-             Authorization: "Bearer " + token,
-           },
-         }
-       );
+      response = await axios.post(
+        "https://jetsetgoapi123.onrender.com/api/flight/add",
+        flightData,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
     }
 
     return redirect("/dashboard/flight");

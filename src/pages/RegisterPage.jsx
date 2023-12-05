@@ -1,9 +1,20 @@
+import React, { Suspense } from "react";
 import axios from "axios";
 import { redirect } from "react-router-dom";
-import Register from "../components/Register";
+const Register = React.lazy(() => import("../components/Register"));
 
 const RegisterPage = () => {
-  return <Register />;
+  return (
+    <Suspense
+      fallback={
+        <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+          Loading....
+        </p>
+      }
+    >
+      <Register />
+    </Suspense>
+  );
 };
 
 export default RegisterPage;

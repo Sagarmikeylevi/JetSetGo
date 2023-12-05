@@ -1,7 +1,10 @@
+import React, { Suspense, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import SearchedFlights from "../components/SearchedFlights";
+const SearchedFlights = React.lazy(() =>
+  import("../components/SearchedFlights")
+);
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+
 import Loading from "../components/UI/Loading";
 
 const SearchedFlightsPage = () => {
@@ -65,7 +68,17 @@ const SearchedFlightsPage = () => {
       },
     },
   ];
-  return <SearchedFlights data={data} />;
+  return (
+    <Suspense
+      fallback={
+        <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+          Loading....
+        </p>
+      }
+    >
+      <SearchedFlights data={data} />
+    </Suspense>
+  );
 };
 
 export default SearchedFlightsPage;

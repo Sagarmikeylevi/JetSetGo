@@ -1,10 +1,23 @@
+import React, { Suspense } from "react";
 import { redirect } from "react-router-dom";
-import PassengerDetails from "../components/PassengerDetails";
+const PassengerDetails = React.lazy(() =>
+  import("../components/PassengerDetails")
+);
 import axios from "axios";
 import { getAuthToken } from "../utils/auth";
 
 const PassengerDetailsPage = () => {
-  return <PassengerDetails />;
+  return (
+    <Suspense
+      fallback={
+        <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+          Loading....
+        </p>
+      }
+    >
+      <PassengerDetails />
+    </Suspense>
+  );
 };
 
 export default PassengerDetailsPage;

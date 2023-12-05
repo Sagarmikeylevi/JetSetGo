@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import ShowPassenger from "../components/ShowPassenger";
+import React, { Suspense, useEffect, useState } from "react";
+const ShowPassenger = React.lazy(() => import("../components/ShowPassenger"));
 
 import { useLocation } from "react-router-dom";
 import axios from "axios";
@@ -69,7 +69,17 @@ const ShowPassengerPage = () => {
     fetchPassenger();
   }, [flights, token, passengerId]);
 
-  return <ShowPassenger bookingDetails={bookingDetails} />;
+  return (
+    <Suspense
+      fallback={
+        <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+          Loading....
+        </p>
+      }
+    >
+      <ShowPassenger bookingDetails={bookingDetails} />
+    </Suspense>
+  );
 };
 
 export default ShowPassengerPage;
