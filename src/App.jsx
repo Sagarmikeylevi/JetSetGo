@@ -36,16 +36,38 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+            Loading....
+          </p>
+        }
+      >
         <RootLayout />
       </Suspense>
     ),
-    errorElement: <ErrorPage />,
+    errorElement: (
+      <Suspense
+        fallback={
+          <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+            Loading....
+          </p>
+        }
+      >
+        <ErrorPage />
+      </Suspense>
+    ),
     children: [
       {
         index: true,
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense
+            fallback={
+              <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+                Loading....
+              </p>
+            }
+          >
             <LandingPage />
           </Suspense>
         ),
@@ -53,7 +75,13 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense
+            fallback={
+              <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+                Loading....
+              </p>
+            }
+          >
             <LoginPage />
           </Suspense>
         ),
@@ -73,7 +101,13 @@ const router = createBrowserRouter([
           {
             index: true,
             element: (
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense
+                fallback={
+                  <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+                    Loading....
+                  </p>
+                }
+              >
                 <FlightPage />
               </Suspense>
             ),
@@ -81,7 +115,13 @@ const router = createBrowserRouter([
           {
             path: "flight-results",
             element: (
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense
+                fallback={
+                  <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+                    Loading....
+                  </p>
+                }
+              >
                 <SearchedFlightsPage />
               </Suspense>
             ),
@@ -96,7 +136,13 @@ const router = createBrowserRouter([
           {
             path: "show-passenger",
             element: (
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense
+                fallback={
+                  <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+                    Loading....
+                  </p>
+                }
+              >
                 <ShowPassengerPage />
               </Suspense>
             ),
@@ -108,7 +154,13 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: (
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense
+                    fallback={
+                      <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+                        Loading....
+                      </p>
+                    }
+                  >
                     <OnBoardListPage />,
                   </Suspense>
                 ),
@@ -117,7 +169,13 @@ const router = createBrowserRouter([
               {
                 path: "passengers",
                 element: (
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense
+                    fallback={
+                      <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+                        Loading....
+                      </p>
+                    }
+                  >
                     <OnBoardPassengerPage />,
                   </Suspense>
                 ),
@@ -133,7 +191,13 @@ const router = createBrowserRouter([
           {
             index: true,
             element: (
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense
+                fallback={
+                  <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+                    Loading....
+                  </p>
+                }
+              >
                 <AdminPage />
               </Suspense>
             ),
@@ -146,7 +210,13 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: (
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense
+                    fallback={
+                      <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+                        Loading....
+                      </p>
+                    }
+                  >
                     <AdminFlight />
                   </Suspense>
                 ),
@@ -161,7 +231,13 @@ const router = createBrowserRouter([
               {
                 path: ":flightID",
                 element: (
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense
+                    fallback={
+                      <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+                        Loading....
+                      </p>
+                    }
+                  >
                     <FlightDetailsPage />
                   </Suspense>
                 ),
@@ -182,7 +258,13 @@ const router = createBrowserRouter([
   {
     path: "/unAuth",
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
+            Loading....
+          </p>
+        }
+      >
         <UnAuthPage />
       </Suspense>
     ),
