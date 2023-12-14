@@ -19,7 +19,7 @@ const API_BASE_URL = "https://jetsetgoapi123.onrender.com/api/";
 
 const RootLayout = () => {
   const token = useSelector((state) => state.user.token);
-  const [logoutMsg, setLogOutMsg] = useState(false);
+  // const [logoutMsg, setLogOutMsg] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const RootLayout = () => {
 
     logoutTimer = setTimeout(() => {
       dispatch(logout());
-      setLogOutMsg(true);
+      // setLogOutMsg(true);
     }, tokenDuration);
 
     getUser(token);
@@ -76,9 +76,9 @@ const RootLayout = () => {
     return () => clearTimeout(logoutTimer);
   }, [token, dispatch]);
 
-  if (logoutMsg) {
-    return <Error message="Logged Out!" />;
-  }
+  // if (logoutMsg) {
+  //   return <Error message="Logged Out!" />;
+  // }
 
   return (
     <>
