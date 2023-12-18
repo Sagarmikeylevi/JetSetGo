@@ -61,7 +61,7 @@ const RootLayout = () => {
       return;
     }
 
-    setLogOutMsg(false);
+    // setLogOutMsg(false);
 
     const tokenDuration = getTokenDuration();
 
