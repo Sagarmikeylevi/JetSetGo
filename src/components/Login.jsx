@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Form, useNavigation, useNavigate } from "react-router-dom";
+import { Link, Form, useNavigate } from "react-router-dom";
 import Error from "./UI/Error";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -7,55 +7,44 @@ import { setToken } from "../store/user-slice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState({
     error: false,
     message: "",
   });
   const dispatch = useDispatch();
-  const navigation = useNavigation();
+
   const navigate = useNavigate();
 
-  const loginHandler = (e) => {
+  const loginHandler = async (e) => {
     e.preventDefault();
 
-    // console.log("Clicked");
+    setIsSubmitting(true);
 
-    const loginData = {
-      email,
-      password,
-    };
+    const loginData = { email, password };
 
-    const SendLoginData = async (data) => {
-      try {
-        const response = await axios.post(
-          "https://jetsetgoapi123.onrender.com/api/user/login",
-          data
-        );
-
-        const token = response.data.data.token;
-        // console.log("TOKEN ===>", token);
-        dispatch(setToken({ token }));
-
-        navigate("/");
-      } catch (error) {
-        console.log("What's going on ??", error);
-        setIsError({
-          error: true,
-          message: error.response.data.error,
-        });
-      }
-    };
-
-    SendLoginData(loginData);
+    try {
+      const response = await axios.post(
+        "https://jetsetgoapi123.onrender.com/api/user/login",
+        loginData
+      );
+      const token = response.data.data.token;
+      dispatch(setToken({ token }));
+      setIsSubmitting(false);
+      navigate("/");
+    } catch (error) {
+      console.error("Error during login:", error);
+      setIsError({
+        error: true,
+        message: error.response?.data?.error || "An error occurred",
+      });
+    }
   };
 
   if (isError.error) {
     return <Error message={isError.message} />;
   }
-
-  const isSubmitting =
-    navigation.state === "submitting" || navigation.state === "loading";
 
   const formLabelStyle = "font-semibold text-gray-600";
   const formInputStyle =
@@ -137,7 +126,7 @@ const Login = () => {
             type="submit"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Logiing in..." : "Log in"}
+            {isSubmitting ? "Loging in..." : "Log in"}
           </button>
         </Form>
         <p className="text-sm tracking-wider text-gray-600">
