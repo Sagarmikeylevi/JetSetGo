@@ -7,6 +7,7 @@ import axios from "axios";
 import { getAuthToken } from "../utils/auth";
 
 const PassengerDetailsPage = () => {
+  console.log("<PassengerDetailsPage /> rendered");
   return (
     <Suspense
       fallback={

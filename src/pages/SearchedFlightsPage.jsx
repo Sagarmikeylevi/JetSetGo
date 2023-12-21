@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import Loading from "../components/UI/Loading";
 
 const SearchedFlightsPage = () => {
+  console.log("<SearchedFlightsPage /> rendered");
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
   const flights = useSelector((state) => state.flights.flights);

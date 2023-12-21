@@ -7,13 +7,29 @@ import { getAuthToken } from "../utils/auth";
 import { useSelector } from "react-redux";
 
 const ShowPassengerPage = () => {
-  const [bookingDetails, setBookingDetails] = useState({});
+  console.log("<ShowPassengerPage /> rendered");
+  const [bookingDetails, setBookingDetails] = useState({
+    _id: "",
+    name: "",
+    dob: "",
+    sex: "",
+    nationality: "",
+    panCard: "",
+    phoneNo: "",
+    email: "",
+    departure: "",
+    arrival: "",
+    class: "",
+    date: "",
+    price: "",
+    status: "",
+  });
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const token = getAuthToken();
   const flights = useSelector((state) => state.flights.flights);
 
-  console.log("Flights", flights);
+  // console.log("Flights", flights);
 
   const passengerId = queryParams.get("id");
 
@@ -29,11 +45,11 @@ const ShowPassengerPage = () => {
           }
         );
 
-        const passengerFlight = flights.find(
+        const passengerFlight = await flights.find(
           (flight) => flight._id === response.data.data.flightId
         );
 
-        console.log("PASSENGER FLIGHT ===>", passengerFlight);
+        // console.log("PASSENGER FLIGHT ===>", passengerFlight);
         const dateString = response.data.data.date_of_birth;
         const dateObject = new Date(dateString);
 
@@ -52,14 +68,15 @@ const ShowPassengerPage = () => {
           panCard: response.data.data.panCard,
           phoneNo: response.data.data.phone,
           email: response.data.data.email,
-          departure: passengerFlight.departureDestination,
-          arrival: passengerFlight.arrivalDestination,
+          departure: passengerFlight
+            ? passengerFlight.departureDestination
+            : "",
+          arrival: passengerFlight ? passengerFlight.arrivalDestination : "",
           class: response.data.data.flightClass,
           date: response.data.data.departureDate,
           price: response.data.data.price,
           status: response.data.data.status,
         };
-
         setBookingDetails(details);
       } catch (error) {
         console.log(error);

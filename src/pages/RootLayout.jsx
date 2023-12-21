@@ -18,6 +18,7 @@ const api = axios.create({
 const API_BASE_URL = "https://jetsetgoapi123.onrender.com/api/";
 
 const RootLayout = () => {
+  // console.log("<RootLayout /> rendered");
   const token = useSelector((state) => state.user.token);
   // const [logoutMsg, setLogOutMsg] = useState(false);
   const dispatch = useDispatch();

@@ -11,6 +11,7 @@ import { useLocation } from "react-router-dom";
 import Loading from "../components/UI/Loading";
 
 const OnBoardPassengerPage = () => {
+  console.log("<OnBoardPassengerPage /> rendered");
   const [isLoading, setIsLoading] = useState(false);
   const [conformPass, setConformPass] = useState([]);
   const [nonconformPass, setNonconformPass] = useState([]);

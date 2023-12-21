@@ -3,6 +3,7 @@ import React, { Suspense } from "react";
 const Login = React.lazy(() => import("../components/Login"));
 
 const LoginPage = () => {
+  console.log("<LoginPage /> rendered");
   return (
     <Suspense
       fallback={

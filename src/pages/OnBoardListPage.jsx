@@ -3,6 +3,7 @@ import React, { Suspense } from "react";
 const OnBoardList = React.lazy(() => import("../components/OnBoardList"));
 
 const OnBoardListPage = () => {
+  console.log("<OnBoardListPage /> rendered");
   return (
     <Suspense
       fallback={

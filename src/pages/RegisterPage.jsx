@@ -4,6 +4,7 @@ import { redirect } from "react-router-dom";
 const Register = React.lazy(() => import("../components/Register"));
 
 const RegisterPage = () => {
+  console.log("<RegisterPage /> rendered");
   return (
     <Suspense
       fallback={
