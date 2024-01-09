@@ -13,7 +13,7 @@ const userSlice = createSlice({
     setToken(state, action) {
       const { token } = action.payload;
       state.token = token;
-
+      // save token to the local storage
       localStorage.setItem("token", token);
       const expiration = new Date();
       expiration.setHours(expiration.getHours() + 1);

@@ -1,46 +1,67 @@
-import { useState } from "react";
-import { Link, Form, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+  Link,
+  Form,
+  useNavigate,
+  useActionData,
+  useNavigation,
+} from "react-router-dom";
 import Error from "./UI/Error";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setToken } from "../store/user-slice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState({
     error: false,
     message: "",
   });
+
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
 
-  const loginHandler = async (e) => {
-    e.preventDefault();
+  // getting response from action
+  const response = useActionData();
 
-    setIsSubmitting(true);
+  useEffect(() => {
+    // if (response) {
+    //   if (response.ok) {
+    //     const token = response.data;
+    //     // save token to the redux store
+    //     dispatch(setToken({ token }));
+    //     // navigate to the home page
+    //     navigate("/");
+    //   } else {
+    //     // setting error state to true and store error message
+    //     setIsError({
+    //       error: true,
+    //       message: response.data?.error ?? "An error occurred",
+    //     });
+    //   }
+    // }
 
-    const loginData = { email, password };
+    if (!response) return;
 
-    try {
-      const response = await axios.post(
-        "https://jetsetgoapi123.onrender.com/api/user/login",
-        loginData
-      );
-      const token = response.data.data.token;
+    const { ok, data } = response;
+
+    if (ok) {
+      const token = data;
+      // save token to the redux store
       dispatch(setToken({ token }));
-      setIsSubmitting(false);
+
+      // navigating to the home page
       navigate("/");
-    } catch (error) {
-      console.error("Error during login:", error);
+    } else {
+      // setting error state to true and store error message
       setIsError({
         error: true,
-        message: error.response?.data?.error || "An error occurred",
+        message: response.data?.error ?? "An error occurred",
       });
     }
-  };
+  }, [response]);
 
   if (isError.error) {
     return <Error message={isError.message} />;
@@ -73,7 +94,7 @@ const Login = () => {
         </div>
 
         <Form
-          onSubmit={loginHandler}
+          // onSubmit={loginHandler}
           method="POST"
           className="flex flex-col gap-2"
         >

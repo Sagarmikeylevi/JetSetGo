@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 const LandingPage = React.lazy(() => import("./pages/LandingPage"));
-const LoginPage = React.lazy(() => import("./pages/LoginPage"));
+import LoginPage, { action as loginAction } from "./pages/LoginPage";
 import RegisterPage, { action as registerAction } from "./pages/RegisterPage";
 const RootLayout = React.lazy(() => import("./pages/RootLayout"));
 const FlightPage = React.lazy(() => import("./pages/FlightPage"));
@@ -74,17 +74,8 @@ const router = createBrowserRouter([
       },
       {
         path: "login",
-        element: (
-          <Suspense
-            fallback={
-              <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
-                Loading....
-              </p>
-            }
-          >
-            <LoginPage />
-          </Suspense>
-        ),
+        element: <LoginPage />,
+        action: loginAction,
       },
       {
         path: "register",

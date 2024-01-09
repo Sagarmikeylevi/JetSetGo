@@ -4,7 +4,7 @@ import { redirect } from "react-router-dom";
 const Register = React.lazy(() => import("../components/Register"));
 
 const RegisterPage = () => {
-  console.log("<RegisterPage /> rendered");
+  // console.log("<RegisterPage /> rendered");
   return (
     <Suspense
       fallback={
@@ -20,16 +20,19 @@ const RegisterPage = () => {
 
 export default RegisterPage;
 
+// This will get the user data and then make a post request
 export const action = async ({ request }) => {
   try {
     const data = await request.formData();
 
+    // user data
     const userData = {
       name: data.get("name"),
       email: data.get("email"),
       password: data.get("password"),
     };
 
+    // Post request
     await axios.post(
       "https://jetsetgoapi123.onrender.com/api/user/register",
       userData
