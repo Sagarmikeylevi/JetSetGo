@@ -37,13 +37,3 @@ export const checkAuthLoader = () => {
   }
   return null;
 };
-
-export const getUser = () => {
-  const user = localStorage.getItem("user");
-  return user;
-};
-
-export const getUserName = () => {
-  const name = localStorage.getItem("userName");
-  return name;
-};

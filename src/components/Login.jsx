@@ -27,22 +27,6 @@ const Login = () => {
   const response = useActionData();
 
   useEffect(() => {
-    // if (response) {
-    //   if (response.ok) {
-    //     const token = response.data;
-    //     // save token to the redux store
-    //     dispatch(setToken({ token }));
-    //     // navigate to the home page
-    //     navigate("/");
-    //   } else {
-    //     // setting error state to true and store error message
-    //     setIsError({
-    //       error: true,
-    //       message: response.data?.error ?? "An error occurred",
-    //     });
-    //   }
-    // }
-
     if (!response) return;
 
     const { ok, data } = response;

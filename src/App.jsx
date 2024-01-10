@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 const LandingPage = React.lazy(() => import("./pages/LandingPage"));
@@ -31,6 +31,11 @@ const OnBoardPassengerPage = React.lazy(() =>
 const UnAuthPage = React.lazy(() => import("./pages/UnAuthPage"));
 import { checkAuthLoader } from "./utils/auth";
 import HotelsPage from "./pages/HotelsPage";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { setUser } from "./store/user-slice";
+import { setFlights } from "./store/flight-slice";
+import Error from "./components/UI/Error";
 
 const router = createBrowserRouter([
   {
@@ -263,6 +268,74 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const token = useSelector((state) => state.user.token);
+  const dispatch = useDispatch();
+  const [isError, setIsError] = useState({
+    error: false,
+    message: "",
+  });
+
+  // Retching user and storing the data in redux store
+  const fetchUser = async (token) => {
+    try {
+      const res = await axios.get(
+        "https://jetsetgoapi123.onrender.com/api/user/getUser",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const user = res.data.userDetails;
+      dispatch(setUser({ user }));
+    } catch (error) {
+      console.log(error);
+      setIsError({
+        error: true,
+        message: error.response?.error || "Some thing went wrong",
+      });
+    }
+  };
+
+  // Fetching the flights and storing the data in the redux store
+  const fetchFlights = async () => {
+    try {
+      const res = await axios.get(
+        "https://jetsetgoapi123.onrender.com/api/flight/getFlights",
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const flights = res.data.flights;
+      dispatch(setFlights({ flights }));
+    } catch (error) {
+      console.log(error);
+      setIsError({
+        error: true,
+        message: error.response?.error || "Some thing went wrong",
+      });
+    }
+  };
+
+  useEffect(() => {
+    // fetching user
+    if (token) {
+      fetchUser(token);
+    }
+
+    // fetching flights
+    fetchFlights();
+  }, [token]);
+
+  if (isError.error) {
+    <Error message={isError.message} />;
+  }
+
   return <RouterProvider router={router} />;
 }
 
