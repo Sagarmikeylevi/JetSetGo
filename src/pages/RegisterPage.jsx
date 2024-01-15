@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import axios from "axios";
 import { redirect } from "react-router-dom";
+import config from "../config";
 const Register = React.lazy(() => import("../components/Register"));
 
 const RegisterPage = () => {
@@ -24,6 +25,7 @@ export default RegisterPage;
 export const action = async ({ request }) => {
   try {
     const data = await request.formData();
+    const apiUrl = config.development.apiUrl;
 
     // user data
     const userData = {
@@ -33,10 +35,7 @@ export const action = async ({ request }) => {
     };
 
     // Post request
-    await axios.post(
-      "https://jetsetgoapi123.onrender.com/api/user/register",
-      userData
-    );
+    await axios.post(`${apiUrl}/api/user/register`, userData);
 
     return redirect("/login");
   } catch (error) {

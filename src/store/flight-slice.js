@@ -4,6 +4,7 @@ const flightSlice = createSlice({
   name: "flight",
   initialState: {
     flights: [],
+    searchedFlightDetails: {},
     prices: {
       AirIndia: {
         economy: 1500,

@@ -172,7 +172,6 @@ const PassengerDetails = () => {
         {/* submission */}
         <div className="mt-8 w-full flex flex-row justify-end space-x-4">
           <button
-            
             type="submit"
             className={`border-none outline-none px-6 py-2 bg-green-500 text-white rounded-md font-thin text-lg ${
               submitPermission

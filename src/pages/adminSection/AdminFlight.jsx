@@ -1,6 +1,8 @@
 import React, { Suspense } from "react";
 
-const DashboardFlight = React.lazy(() => import("../../components/dashboard/DashboardFlight"));
+const DashboardFlight = React.lazy(() =>
+  import("../../components/dashboard/DashboardFlight")
+);
 
 const AdminFlight = () => {
   return (
@@ -13,7 +15,7 @@ const AdminFlight = () => {
     >
       <DashboardFlight />
     </Suspense>
-  ); 
+  );
 };
 
 export default AdminFlight;

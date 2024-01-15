@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useState } from "react";
 import axios from "axios";
 const OnBoardPassenger = React.lazy(() =>
   import("../components/OnBoardPassenger")
@@ -9,12 +9,14 @@ import { setPassenger } from "../store/passenger-slice";
 
 import { useLocation } from "react-router-dom";
 import Loading from "../components/UI/Loading";
+import config from "../config";
 
 const OnBoardPassengerPage = () => {
-  console.log("<OnBoardPassengerPage /> rendered");
+  // console.log("<OnBoardPassengerPage /> rendered");
   const [isLoading, setIsLoading] = useState(false);
   const [conformPass, setConformPass] = useState([]);
   const [nonconformPass, setNonconformPass] = useState([]);
+  const apiUrl = config.development.apiUrl;
 
   const passengers = useSelector((state) => state.passenger.passengerList);
 
@@ -25,10 +27,10 @@ const OnBoardPassengerPage = () => {
 
   const dispatch = useDispatch();
   const token = getAuthToken();
-  const fetchPassengers = async () => {
+  const fetchPassengers = useCallback(async () => {
     try {
       const response = await axios.get(
-        "https://jetsetgoapi123.onrender.com/api/passenger/getAllPassengers",
+        `${apiUrl}/api/passenger/getAllPassengers`,
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -42,7 +44,7 @@ const OnBoardPassengerPage = () => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [dispatch, token]);
 
   useEffect(() => {
     fetchPassengers();

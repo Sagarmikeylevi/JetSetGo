@@ -11,8 +11,6 @@ const Navigation = () => {
     userName = user.name;
   }
 
-  // console.log(user);
-
   const location = useLocation();
 
   const logoutHandler = () => {

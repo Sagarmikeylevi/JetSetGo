@@ -3,7 +3,7 @@ import React, { Suspense } from "react";
 const Flight = React.lazy(() => import("../components/Flight"));
 
 const FlightPage = () => {
-  console.log("<FlightPage /> rendered");
+  // console.log("<FlightPage /> rendered");
   return (
     <Suspense
       fallback={

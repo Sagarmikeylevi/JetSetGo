@@ -1,9 +1,9 @@
 import React, { Suspense } from "react";
-import { useSelector } from "react-redux";
 
 const Home = React.lazy(() => import("../components/Home"));
 
 const LandingPage = () => {
+  console.log(`<h1>Landing Page </h1>`);
   return (
     <Suspense
       fallback={

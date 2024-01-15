@@ -1,66 +1,42 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense } from "react";
 import { useLocation } from "react-router-dom";
 const SearchedFlights = React.lazy(() =>
   import("../components/SearchedFlights")
 );
 import { useSelector } from "react-redux";
 
-import Loading from "../components/UI/Loading";
-
 const SearchedFlightsPage = () => {
-  console.log("<SearchedFlightsPage /> rendered");
-  const [isLoading, setIsLoading] = useState(false);
-  const location = useLocation();
   const flights = useSelector((state) => state.flights.flights);
-
-  useEffect(() => {
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  }, []);
-
-  if (isLoading) {
-    return <Loading message="Fetching Flights..." />;
-  }
+  const location = useLocation();
 
   const queryParams = new URLSearchParams(location.search);
-
+  /* getting flight details from query params */
   const departure = queryParams.get("departure");
   const arrival = queryParams.get("arrival");
   const date = queryParams.get("date");
   const flightClass = queryParams.get("class");
 
-  const combinedDate = date.split(",");
+  /* This will make the date DD/MM/YYYY format */
+  const dateDDMMYYYY = date.split(",")[1];
+  /* taking DD from DD/MM/YYYY */
+  const monthDate = dateDDMMYYYY.split("/")[0];
 
-  const weekDay = combinedDate[0];
-  const flightDate = combinedDate[combinedDate.length - 1];
-
+  /* filtering the flights by departure and arrival destination and date */
   const searchedFlights = flights.filter(
     (flight) =>
       flight.departureDestination.toLowerCase() === departure.toLowerCase() &&
       flight.arrivalDestination.toLowerCase() === arrival.toLowerCase() &&
-      flight.datesOfDeparture.includes(21)
+      flight.datesOfDeparture.includes(+monthDate)
   );
 
-  const data = [
-    {
-      searchDetails: {
-        departure,
-        arrival,
-        date,
-        flightClass,
-        weekDay,
-        flightDate,
-      },
-    },
-    {
-      searchFlights: {
-        searchedFlights,
-      },
-    },
-  ];
+  const searchedFlightData = {
+    searchedFlights,
+    departureDestination: departure,
+    arrivalDestination: arrival,
+    classOfFlight: flightClass,
+    departureDate: dateDDMMYYYY,
+  };
+
   return (
     <Suspense
       fallback={
@@ -69,7 +45,7 @@ const SearchedFlightsPage = () => {
         </p>
       }
     >
-      <SearchedFlights data={data} />
+      <SearchedFlights searchedFlightDetails={searchedFlightData} />
     </Suspense>
   );
 };

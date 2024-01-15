@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { Suspense } from "react";
+import config from "../config";
 
 const Login = React.lazy(() => import("../components/Login"));
 
@@ -24,6 +25,7 @@ export default LoginPage;
 export const action = async ({ request }) => {
   try {
     const data = await request.formData();
+    const apiUrl = config.development.apiUrl;
 
     // user data from the login form
     const userData = {
@@ -32,10 +34,7 @@ export const action = async ({ request }) => {
     };
 
     // post request
-    const res = await axios.post(
-      "https://jetsetgoapi123.onrender.com/api/user/login",
-      userData
-    );
+    const res = await axios.post(`${apiUrl}/api/user/login`, userData);
 
     return { ok: true, data: res.data.data.token };
   } catch (error) {

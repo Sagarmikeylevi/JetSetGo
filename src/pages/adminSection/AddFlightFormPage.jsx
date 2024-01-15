@@ -5,6 +5,7 @@ const AddFlightForm = React.lazy(() =>
 import axios from "axios";
 import { getAuthToken } from "../../utils/auth";
 import { redirect } from "react-router-dom";
+import config from "../../config";
 
 const AddFlightFormPage = () => {
   return (
@@ -24,8 +25,9 @@ export default AddFlightFormPage;
 
 export const action = async ({ request }) => {
   try {
+    const apiUrl = config.development.apiUrl;
     const currentURL = window.location.href;
-    console.log("Current URL:", currentURL);
+    // console.log("Current URL:", currentURL);
     const token = getAuthToken();
     const data = await request.formData();
     const dates = data.get("dates");
@@ -75,8 +77,6 @@ export const action = async ({ request }) => {
       seatsAvailable: seatsClass,
     };
 
-    console.log("Its working....");
-
     let response = "";
 
     if (currentURL.includes("update")) {
@@ -84,7 +84,7 @@ export const action = async ({ request }) => {
       const Id = UrlParts[UrlParts.length - 1];
 
       response = await axios.put(
-        `https://jetsetgoapi123.onrender.com/api/flight/update/${Id}`,
+        `${apiUrl}/api/flight/update/${Id}`,
         flightData,
         {
           headers: {
@@ -104,9 +104,11 @@ export const action = async ({ request }) => {
       );
     }
 
+    // console.log("RESPONSE ==>", response);
+
     return redirect("/dashboard/flight");
   } catch (error) {
     console.log(error);
-    return error.response;
+    return { ok: false, data: error.response };
   }
 };

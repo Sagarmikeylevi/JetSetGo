@@ -5,8 +5,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { getAuthToken } from "../utils/auth";
 import { deletePass } from "../store/passenger-slice";
 import Loading from "./UI/Loading";
+import config from "../config";
 
 const ShowPassenger = ({ bookingDetails }) => {
+  const apiUrl = config.development.apiUrl;
   const [termsAndConditions, setTermsAndConditions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const token = getAuthToken();
@@ -15,14 +17,11 @@ const ShowPassenger = ({ bookingDetails }) => {
 
   const deletePassenger = async (id) => {
     try {
-      await axios.delete(
-        `https://jetsetgoapi123.onrender.com/api/passenger/delete/${id}`,
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      await axios.delete(`${apiUrl}/api/passenger/delete/${id}`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
       dispatch(deletePass({ id }));
     } catch (error) {
       console.log(error);
@@ -32,7 +31,7 @@ const ShowPassenger = ({ bookingDetails }) => {
   const conformPassenger = async (id) => {
     try {
       await axios.put(
-        `https://jetsetgoapi123.onrender.com/api/passenger/conform/${id}`,
+        `${apiUrl}/api/passenger/conform/${id}`,
         {},
         {
           headers: {

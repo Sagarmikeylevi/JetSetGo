@@ -4,11 +4,13 @@ import {
   Link,
   useActionData,
   useLocation,
+  useNavigate,
   useNavigation,
   useParams,
 } from "react-router-dom";
 import Error from "../UI/Error";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addFlights } from "../../store/flight-slice";
 
 const InputField = ({ label, id, name, placeholder, value, onChange }) => {
   return (
@@ -83,11 +85,6 @@ const NumberInputField = ({
 };
 
 const AddFlightForm = () => {
-  const response = useActionData();
-  if (response) {
-    console.log("Response ---->", response.data);
-    return <Error message={response.data.error} />;
-  }
   const [departureDest, setDepartureDest] = useState("");
   const [arrivalDest, setArrivalDest] = useState("");
   const [dates, setDates] = useState("");
@@ -128,7 +125,6 @@ const AddFlightForm = () => {
     economy.trim().length === 0 ||
     premiumEconomy.trim().length === 0 ||
     business.trim().length === 0;
-
 
   let mode = selectedFlight ? "PUT" : "POST";
 

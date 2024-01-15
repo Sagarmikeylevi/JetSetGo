@@ -5,9 +5,10 @@ const PassengerDetails = React.lazy(() =>
 );
 import axios from "axios";
 import { getAuthToken } from "../utils/auth";
+import config from "../config";
 
 const PassengerDetailsPage = () => {
-  console.log("<PassengerDetailsPage /> rendered");
+  // console.log("<PassengerDetailsPage /> rendered");
   return (
     <Suspense
       fallback={
@@ -27,6 +28,7 @@ export const action = async ({ request }) => {
   try {
     const data = await request.formData();
     const urlParams = new URLSearchParams(window.location.search);
+    const apiUrl = config.development.apiUrl;
 
     // Get values by key
     const flightId = urlParams.get("flightId");
@@ -49,15 +51,11 @@ export const action = async ({ request }) => {
     };
 
     const token = getAuthToken();
-    await axios.post(
-      "https://jetsetgoapi123.onrender.com/api/passenger/add",
-      passengerData,
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
+    await axios.post(`${apiUrl}/api/passenger/add`, passengerData, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
 
     return redirect("/flights/on-board-list");
   } catch (error) {

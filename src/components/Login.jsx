@@ -22,30 +22,33 @@ const Login = () => {
   const navigate = useNavigate();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
-
   // getting response from action
   const response = useActionData();
 
   useEffect(() => {
-    if (!response) return;
+    const actionDataHandler = (response) => {
+      const { ok, data } = response;
 
-    const { ok, data } = response;
+      if (ok) {
+        const token = data;
+        // save token to the redux store
+        dispatch(setToken({ token }));
 
-    if (ok) {
-      const token = data;
-      // save token to the redux store
-      dispatch(setToken({ token }));
+        // navigating to the home page
+        navigate("/");
+      } else {
+        // setting error state to true and store error message
+        setIsError({
+          error: true,
+          message: response.data?.error ?? "An error occurred",
+        });
+      }
+    };
 
-      // navigating to the home page
-      navigate("/");
-    } else {
-      // setting error state to true and store error message
-      setIsError({
-        error: true,
-        message: response.data?.error ?? "An error occurred",
-      });
+    if (response) {
+      actionDataHandler(response);
     }
-  }, [response]);
+  }, [response, dispatch]);
 
   if (isError.error) {
     return <Error message={isError.message} />;

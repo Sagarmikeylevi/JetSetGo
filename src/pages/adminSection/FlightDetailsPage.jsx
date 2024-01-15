@@ -9,6 +9,7 @@ const FlightDetailsPage = () => {
   const { flightID } = useParams();
 
   const flights = useSelector((state) => state.flights.flights);
+  console.log("FLIGHTS ==>", flights);
 
   const flight = flights.filter((flight) => flight._id === flightID);
 

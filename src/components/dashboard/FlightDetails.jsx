@@ -7,7 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { setFlights } from "../../store/flight-slice";
 import { useState } from "react";
 import Loading from "../UI/Loading";
+import config from "../../config";
 const FlightDetails = ({ flight }) => {
+  const apiUrl = config.development.apiUrl;
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const flights = useSelector((state) => state.flights.flights);
@@ -28,14 +30,11 @@ const FlightDetails = ({ flight }) => {
   const deteleReq = async (id) => {
     try {
       const token = getAuthToken();
-      const response = await axios.delete(
-        `https://jetsetgoapi123.onrender.com/api/flight/delete/${id}`,
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      const response = await axios.delete(`${apiUrl}/api/flight/delete/${id}`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
     } catch (error) {
       console.log(error);
     }

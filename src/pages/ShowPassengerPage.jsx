@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { getAuthToken } from "../utils/auth";
 import { useSelector } from "react-redux";
+import config from "../config";
 
 const ShowPassengerPage = () => {
   console.log("<ShowPassengerPage /> rendered");
@@ -28,6 +29,7 @@ const ShowPassengerPage = () => {
   const queryParams = new URLSearchParams(location.search);
   const token = getAuthToken();
   const flights = useSelector((state) => state.flights.flights);
+  const apiUrl = config.development.apiUrl;
 
   // console.log("Flights", flights);
 
@@ -37,7 +39,7 @@ const ShowPassengerPage = () => {
     const fetchPassenger = async () => {
       try {
         const response = await axios.get(
-          `https://jetsetgoapi123.onrender.com/api/passenger//getPassenger/${passengerId}`,
+          `${apiUrl}/api/passenger//getPassenger/${passengerId}`,
           {
             headers: {
               Authorization: "Bearer " + token,

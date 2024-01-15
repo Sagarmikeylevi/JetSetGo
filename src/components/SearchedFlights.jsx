@@ -1,21 +1,30 @@
 import { useSelector } from "react-redux";
 import Card from "./UI/Card";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Loading from "./UI/Loading";
 
-const SearchedFlights = ({ data }) => {
+const SearchedFlights = ({ searchedFlightDetails }) => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    searchedFlights,
+    departureDestination,
+    arrivalDestination,
+    classOfFlight,
+    departureDate,
+  } = searchedFlightDetails;
+
   const prices = useSelector((state) => state.flights.prices);
-  const flight_class = data[0].searchDetails.flightClass.toLowerCase();
   const navigate = useNavigate();
 
+  /* making the departure date to an actual date */
   const parseDateString = (dateString) => {
-    const [, day, month, year] = dateString.match(/(\d+)\/(\d+)\/(\d+)/);
+    const [day, month, year] = dateString.split("/");
     return new Date(`${year}-${month}-${day}`);
   };
 
-  const searchDate = parseDateString(data[0].searchDetails.date);
+  const searchDate = parseDateString(departureDate);
 
   const formattedSearchDate = `${searchDate.toLocaleDateString("en-US", {
     weekday: "long",
@@ -24,6 +33,8 @@ const SearchedFlights = ({ data }) => {
     year: "numeric",
   })}`;
 
+  /* Here it will take 30 days from today
+   ***Note: As we will change the dates it will go till 30th day fro tpday */
   const today = new Date();
   const thirtyDaysFromToday = new Date();
   thirtyDaysFromToday.setDate(today.getDate() + 30);
@@ -38,26 +49,29 @@ const SearchedFlights = ({ data }) => {
     }
 
     return null; // Exclude dates outside the 30-day range
-  }).filter((date) => date !== null);
+  }).filter((dates) => dates !== null);
 
-  const handleSearchFlights = (departureDate) => {
-    setIsLoading(true);
+  /* date changes handler it will search flights of that given day */
+  const handleSearchFlights = useCallback(
+    (departureDate) => {
+      setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
+      const departure_date = departureDate.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        weekday: "long",
+      });
 
-    const departure_date = departureDate.toLocaleDateString("en-IN", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      weekday: "long",
-    });
+      const url = `flight-results?departure=${departureDestination}&arrival=${arrivalDestination}&date=${departure_date}&class=${classOfFlight}`;
 
-    const url = `flight-results?departure=${data[0].searchDetails.departure}&arrival=${data[0].searchDetails.arrival}&date=${departure_date}&class=${data[0].searchDetails.flightClass}`;
-
-    navigate(`/flights/${url}`);
-  };
+      navigate(`/flights/${url}`);
+    },
+    [departureDestination, arrivalDestination, classOfFlight, navigate]
+  );
 
   if (isLoading) {
     return <Loading message="Fetching Flights..." />;
@@ -70,7 +84,7 @@ const SearchedFlights = ({ data }) => {
         <div className="w-full h-[15%] flex flex-row justify-center items-center space-x-4">
           <div className="flex flex-col justify-center space-y-[-5px]">
             <p className="text-lg font-semibold text-green-900">
-              {data[0].searchDetails.departure.slice(0, 3).toUpperCase()}
+              {departureDestination?.slice(0, 3).toUpperCase()}
             </p>
             <p className="text-sm font-medium text-green-900 opacity-80">
               India
@@ -89,7 +103,7 @@ const SearchedFlights = ({ data }) => {
 
           <div className="flex flex-col justify-center space-y-[-5px]">
             <p className="text-lg font-semibold text-green-900">
-              {data[0].searchDetails.arrival.slice(0, 3).toUpperCase()}
+              {arrivalDestination?.slice(0, 3).toUpperCase()}
             </p>
             <p className="text-sm font-medium text-green-900 opacity-80">
               India
@@ -117,21 +131,21 @@ const SearchedFlights = ({ data }) => {
         {/* section - 2 end */}
         {/* section - 3*/}
         <div className="max-h-[60%] w-[95%] flex flex-col space-y-2 items-center p-4 bg-[#e6e6e6] rounded-md overflow-hidden hover:overflow-y-auto scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent relative">
-          {data[1].searchFlights.searchedFlights.length === 0 && (
+          {searchedFlights.length === 0 && (
             <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-xl text-gray-600 font-semibold uppercase">
               No Flights{" "}
             </div>
           )}
-          {data[1].searchFlights.searchedFlights.map((flight) => {
+          {searchedFlights.map((flight) => {
             const airLine = flight.airline;
             let price = "";
-            if (flight_class === "economy") {
+            if (classOfFlight === "economy") {
               price = prices.others.economy;
 
               if (prices[airLine]) {
                 price = prices[airLine].economy;
               }
-            } else if (flight_class === "business") {
+            } else if (classOfFlight === "business") {
               price = prices.others.business;
 
               if (prices[airLine]) {
@@ -147,7 +161,7 @@ const SearchedFlights = ({ data }) => {
 
             return (
               <Link
-                to={`/flights/passenger-details?flightId=${flight._id}&class=${flight_class}&price=${price}&date=${formattedSearchDate}`}
+                to={`/flights/passenger-details?flightId=${flight._id}&class=${classOfFlight}&price=${price}&date=${formattedSearchDate}`}
                 className="max-w-[45rem] w-full min-h-[6rem] rounded-md bg-[#f5f5f5] shadow-md flex flex-row items-center px-8 relative cursor-pointer justify-between"
                 key={flight._id}
               >
@@ -185,9 +199,9 @@ const SearchedFlights = ({ data }) => {
                 </div>
 
                 <p className="absolute top-0 left-[105%] translate-x-[-105%] px-4 py-2 bg-[rgba(30,69,43,0.8)] rounded-md text-white text-xs md:text-sm capitalize">
-                  {flight_class.toLowerCase() === "premium economy"
+                  {classOfFlight.toLowerCase() === "premium economy"
                     ? "PremiumEconomy"
-                    : flight_class}
+                    : classOfFlight}
                 </p>
               </Link>
             );
