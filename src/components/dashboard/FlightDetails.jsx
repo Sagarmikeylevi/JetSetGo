@@ -1,44 +1,35 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Card from "../UI/Card";
-import axios from "axios";
-import { getAuthToken } from "../../utils/auth";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setFlights } from "../../store/flight-slice";
+import { deleteFlight } from "../../store/flight-action";
+import Error from "../UI/Error";
 import { useState } from "react";
+import { showNotification } from "../../store/ui-slice";
 import Loading from "../UI/Loading";
-import config from "../../config";
-const FlightDetails = ({ flight }) => {
-  const apiUrl = config.development.apiUrl;
-  const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
+const FlightDetails = ({ flightId }) => {
+  const token = useSelector((state) => state.user.token);
   const flights = useSelector((state) => state.flights.flights);
+  const notification = useSelector((state) => state.ui.notification);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const deleteFlightHandler = (id) => {
+  const [flight, ...others] = flights.filter(
+    (flight) => flight._id === flightId
+  );
+
+  const deleteFlightHandler = (flightId) => {
     setIsLoading(true);
     setTimeout(() => {
+      dispatch(deleteFlight(flightId, token));
       setIsLoading(false);
-      deteleReq(id);
-      const newFlights = flights.filter((flight) => flight._id !== id);
-      dispatch(setFlights({ flights: newFlights }));
-      // console.log("Flights ===>", flights);
       navigate("/dashboard/flight");
     }, 2000);
   };
 
-  const deteleReq = async (id) => {
-    try {
-      const token = getAuthToken();
-      const response = await axios.delete(`${apiUrl}/api/flight/delete/${id}`, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  if (notification?.status === "error") {
+    return <Error message={showNotification.message} />;
+  }
 
   if (isLoading) {
     return <Loading message="Deleting..." />;

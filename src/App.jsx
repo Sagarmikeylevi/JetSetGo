@@ -37,6 +37,8 @@ import { setUser } from "./store/user-slice";
 import { setFlights } from "./store/flight-slice";
 import Error from "./components/UI/Error";
 import config from "./config";
+import { fetchFlights } from "./store/flight-action";
+import { fetchUser } from "./store/user-action";
 
 const router = createBrowserRouter([
   {
@@ -270,69 +272,19 @@ const router = createBrowserRouter([
 
 function App() {
   const token = useSelector((state) => state.user.token);
-  const apiUrl = config.development.apiUrl;
   const dispatch = useDispatch();
-  const [isError, setIsError] = useState({
-    error: false,
-    message: "",
-  });
-
-  // Retching user and storing the data in redux store
-  const fetchUser = useCallback(
-    async (token) => {
-      try {
-        const res = await axios.get(`${apiUrl}/api/user/getUser`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const user = res.data.userDetails;
-        dispatch(setUser({ user }));
-      } catch (error) {
-        console.log(error);
-        setIsError({
-          error: true,
-          message: error.response?.error || "Some thing went wrong",
-        });
-      }
-    },
-    [dispatch, token]
-  );
-
-  // Fetching the flights and storing the data in the redux store
-  const fetchFlights = useCallback(async () => {
-    try {
-      const res = await axios.get(`${apiUrl}/api/flight/getFlights`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const flights = res.data.flights;
-      dispatch(setFlights({ flights }));
-    } catch (error) {
-      console.log(error);
-      setIsError({
-        error: true,
-        message: error.response?.error || "Some thing went wrong",
-      });
-    }
-  }, [dispatch]);
+  const showNotification = useSelector((state) => state.ui.notification);
 
   useEffect(() => {
-    // fetching user
     if (token) {
-      fetchUser(token);
+      dispatch(fetchUser(token));
     }
 
-    // fetching flights
-    fetchFlights();
-  }, [token]);
+    dispatch(fetchFlights());
+  }, [token, dispatch]);
 
-  if (isError.error) {
-    <Error message={isError.message} />;
+  if (showNotification?.status === "error") {
+    return <Error message={showNotification.message} />;
   }
 
   return <RouterProvider router={router} />;

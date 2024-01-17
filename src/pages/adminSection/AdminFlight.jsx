@@ -1,10 +1,24 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { fetchFlights } from "../../store/flight-action";
 
 const DashboardFlight = React.lazy(() =>
   import("../../components/dashboard/DashboardFlight")
 );
 
 const AdminFlight = () => {
+  const dispatch = useDispatch();
+  const showNotification = useSelector((state) => state.ui.notification);
+
+  useEffect(() => {
+    dispatch(fetchFlights());
+  }, [dispatch]);
+
+  if (showNotification?.status === "error") {
+    <Error message={showNotification.message} />;
+  }
+
   return (
     <Suspense
       fallback={

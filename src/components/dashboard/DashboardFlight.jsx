@@ -11,16 +11,19 @@ const DashboardFlight = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredFlights = flights.length === 0 ? "" : flights.filter(
-    (flight) =>
-      flight.departureDestination
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase()) ||
-      flight.arrivalDestination
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase()) ||
-      flight.airline.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredFlights =
+    flights.length === 0
+      ? ""
+      : flights.filter(
+          (flight) =>
+            flight.departureDestination
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase()) ||
+            flight.arrivalDestination
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase()) ||
+            flight.airline.toLowerCase().includes(searchQuery.toLowerCase())
+        );
 
   return (
     <Card className="h-[95vh] w-[95vw] bg-white rounded-md absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] shadow-xl">

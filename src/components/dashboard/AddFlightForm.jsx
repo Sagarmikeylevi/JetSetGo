@@ -2,15 +2,11 @@ import { useEffect, useState } from "react";
 import {
   Form,
   Link,
-  useActionData,
   useLocation,
-  useNavigate,
   useNavigation,
   useParams,
 } from "react-router-dom";
-import Error from "../UI/Error";
-import { useDispatch, useSelector } from "react-redux";
-import { addFlights } from "../../store/flight-slice";
+import { useSelector } from "react-redux";
 
 const InputField = ({ label, id, name, placeholder, value, onChange }) => {
   return (

@@ -1,17 +1,26 @@
-import React, { Suspense } from "react";
-import { useSelector } from "react-redux";
+import React, { Suspense, useEffect } from "react";
+
 const FlightDetails = React.lazy(() =>
   import("../../components/dashboard/FlightDetails")
 );
 import { useParams } from "react-router-dom";
 
+import { useDispatch, useSelector } from "react-redux";
+import { fetchFlights } from "../../store/flight-action";
+
 const FlightDetailsPage = () => {
   const { flightID } = useParams();
 
-  const flights = useSelector((state) => state.flights.flights);
-  console.log("FLIGHTS ==>", flights);
+  const dispatch = useDispatch();
+  const showNotification = useSelector((state) => state.ui.notification);
 
-  const flight = flights.filter((flight) => flight._id === flightID);
+  useEffect(() => {
+    dispatch(fetchFlights());
+  }, [dispatch]);
+
+  if (showNotification?.status) {
+    <Error message={showNotification.message} />;
+  }
 
   return (
     <Suspense
@@ -21,7 +30,7 @@ const FlightDetailsPage = () => {
         </p>
       }
     >
-      <FlightDetails flight={flight[0]} />
+      <FlightDetails flightId={flightID} />
     </Suspense>
   );
 };

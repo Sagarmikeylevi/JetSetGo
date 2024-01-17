@@ -1,13 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "./UI/Card";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Loading from "./UI/Loading";
 
-const OnBoardPassenger = ({ passengers }) => {
+const OnBoardPassenger = ({ passengerState }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [passengers, setPassengers] = useState([]);
+  const allPassengers = useSelector((state) => state.passenger.passengerList);
+
+  useEffect(() => {
+    setIsLoading(true);
+    if (passengerState === "conform") {
+      const passenger = allPassengers.filter(
+        (pass) => pass.status !== "Not Confirmed"
+      );
+
+      setPassengers(passenger);
+    } else {
+      const passenger = allPassengers.filter(
+        (pass) => pass.status === "Not Confirmed"
+      );
+
+      setPassengers(passenger);
+    }
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, [passengerState, allPassengers]);
 
   const filteredPassengers = passengers.filter((passenger) =>
     passenger.full_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  if (isLoading) {
+    return <Loading message="Fetching Passengers..." />;
+  }
 
   return (
     <Card className="h-[95vh] w-[95vw] bg-white rounded-md absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] shadow-xl">

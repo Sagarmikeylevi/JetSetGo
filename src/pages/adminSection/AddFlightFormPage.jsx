@@ -93,18 +93,12 @@ export const action = async ({ request }) => {
         }
       );
     } else {
-      response = await axios.post(
-        "https://jetsetgoapi123.onrender.com/api/flight/add",
-        flightData,
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      response = await axios.post(`${apiUrl}/api/flight/add`, flightData, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
     }
-
-    // console.log("RESPONSE ==>", response);
 
     return redirect("/dashboard/flight");
   } catch (error) {

@@ -15,6 +15,7 @@ const ShowPassenger = ({ bookingDetails }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // deleting the passenger
   const deletePassenger = async (id) => {
     try {
       await axios.delete(`${apiUrl}/api/passenger/delete/${id}`, {
@@ -28,6 +29,7 @@ const ShowPassenger = ({ bookingDetails }) => {
     }
   };
 
+  // conform if its not conform yet
   const conformPassenger = async (id) => {
     try {
       await axios.put(
