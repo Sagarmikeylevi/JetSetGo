@@ -1,68 +1,45 @@
-import axios from "axios";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { getAuthToken } from "../utils/auth";
-import { deletePass } from "../store/passenger-slice";
 import Loading from "./UI/Loading";
-import config from "../config";
+import {
+  conformPassengerById,
+  deletePassengerById,
+} from "../store/passenger-action";
 
-const ShowPassenger = ({ bookingDetails }) => {
-  const apiUrl = config.development.apiUrl;
+const ShowPassenger = () => {
+  const bookingDetails = useSelector(
+    (state) => state.passenger.passengerDetails
+  );
+
+  const passId = bookingDetails?._id;
   const [termsAndConditions, setTermsAndConditions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const token = getAuthToken();
+  const token = useSelector((state) => state.user.token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // deleting the passenger
-  const deletePassenger = async (id) => {
-    try {
-      await axios.delete(`${apiUrl}/api/passenger/delete/${id}`, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      });
-      dispatch(deletePass({ id }));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // conform if its not conform yet
-  const conformPassenger = async (id) => {
-    try {
-      await axios.put(
-        `${apiUrl}/api/passenger/conform/${id}`,
-        {},
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const cancelHandler = () => {
     setIsLoading(true);
 
     setTimeout(() => {
       setIsLoading(false);
-      deletePassenger(bookingDetails._id);
+      dispatch(deletePassengerById(passId, token));
       navigate("/flights");
     }, 2000);
   };
 
   const conformHandler = () => {
-    conformPassenger(bookingDetails._id);
+    dispatch(conformPassengerById(passId, token));
     navigate("/flights");
   };
 
   if (isLoading) {
     return <Loading message="Deleting...." />;
+  }
+
+  if (!bookingDetails) {
+    return <Loading message="Fetching the passenger..." />;
   }
 
   return (
