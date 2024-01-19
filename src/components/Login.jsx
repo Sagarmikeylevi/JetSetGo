@@ -1,57 +1,35 @@
-import { useEffect, useState } from "react";
-import {
-  Link,
-  Form,
-  useNavigate,
-  useActionData,
-  useNavigation,
-} from "react-router-dom";
+import { useState } from "react";
+import { Link, Form, useNavigate } from "react-router-dom";
 import Error from "./UI/Error";
-import { useDispatch } from "react-redux";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../store/user-slice";
+import { loginRequest } from "../store/user-action";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isError, setIsError] = useState({
-    error: false,
-    message: "",
-  });
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
-  // getting response from action
-  const response = useActionData();
 
-  useEffect(() => {
-    const actionDataHandler = (response) => {
-      const { ok, data } = response;
+  const notification = useSelector((state) => state.ui.notification);
 
-      if (ok) {
-        const token = data;
-        // save token to the redux store
-        dispatch(setToken({ token }));
+  const loginHandler = async (e) => {
+    e.preventDefault();
 
-        // navigating to the home page
-        navigate("/");
-      } else {
-        // setting error state to true and store error message
-        setIsError({
-          error: true,
-          message: response.data?.error ?? "An error occurred",
-        });
-      }
-    };
+    setIsSubmitting(true);
 
-    if (response) {
-      actionDataHandler(response);
-    }
-  }, [response, dispatch]);
+    const userData = { email, password };
+    dispatch(loginRequest(userData));
+    setTimeout(() => {
+      navigate("/");
+      setIsSubmitting(false);
+    }, 1000);
+  };
 
-  if (isError.error) {
-    return <Error message={isError.message} />;
+  if (notification?.status === "error") {
+    return <Error message={notification.message} />;
   }
 
   const formLabelStyle = "font-semibold text-gray-600";
@@ -81,7 +59,7 @@ const Login = () => {
         </div>
 
         <Form
-          // onSubmit={loginHandler}
+          onSubmit={loginHandler}
           method="POST"
           className="flex flex-col gap-2"
         >

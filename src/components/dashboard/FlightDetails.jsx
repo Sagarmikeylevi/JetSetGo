@@ -20,8 +20,8 @@ const FlightDetails = ({ flightId }) => {
 
   const deleteFlightHandler = (flightId) => {
     setIsLoading(true);
+    dispatch(deleteFlight(flightId, token));
     setTimeout(() => {
-      dispatch(deleteFlight(flightId, token));
       setIsLoading(false);
       navigate("/dashboard/flight");
     }, 2000);

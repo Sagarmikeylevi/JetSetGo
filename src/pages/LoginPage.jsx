@@ -1,11 +1,9 @@
 import axios from "axios";
 import React, { Suspense } from "react";
-import config from "../config";
 
 const Login = React.lazy(() => import("../components/Login"));
 
 const LoginPage = () => {
-  // console.log("<LoginPage /> rendered");
   return (
     <Suspense
       fallback={
@@ -20,25 +18,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-
-// This is for taking login data and make a post request
-export const action = async ({ request }) => {
-  try {
-    const data = await request.formData();
-    const apiUrl = config.development.apiUrl;
-
-    // user data from the login form
-    const userData = {
-      email: data.get("email"),
-      password: data.get("password"),
-    };
-
-    // post request
-    const res = await axios.post(`${apiUrl}/api/user/login`, userData);
-
-    return { ok: true, data: res.data.data.token };
-  } catch (error) {
-    // console.log(error.response);
-    return { ok: false, data: error.response.data };
-  }
-};

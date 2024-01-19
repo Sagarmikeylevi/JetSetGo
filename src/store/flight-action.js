@@ -1,6 +1,6 @@
 import axios from "axios";
 import config from "../config";
-import { setFlights } from "./flight-slice";
+import { flightDelete, setFlights } from "./flight-slice";
 import { showNotification } from "./ui-slice";
 
 const apiUrl = config.development.apiUrl;
@@ -44,11 +44,12 @@ export const deleteFlight = (flightId, token) => {
 
     try {
       await deleteRequest();
+      dispatch(flightDelete({ flightId }));
     } catch (error) {
       dispatch(
         showNotification({
           status: "error",
-          title: " Deletion Failed",
+          title: "Deletion Failed",
           message:
             "There was an error deleting the flight. Please try again later.",
         })

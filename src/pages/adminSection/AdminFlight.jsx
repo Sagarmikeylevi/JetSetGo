@@ -9,15 +9,10 @@ const DashboardFlight = React.lazy(() =>
 
 const AdminFlight = () => {
   const dispatch = useDispatch();
-  const showNotification = useSelector((state) => state.ui.notification);
 
   useEffect(() => {
     dispatch(fetchFlights());
   }, [dispatch]);
-
-  if (showNotification?.status === "error") {
-    <Error message={showNotification.message} />;
-  }
 
   return (
     <Suspense

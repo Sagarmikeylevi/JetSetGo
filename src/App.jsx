@@ -2,7 +2,7 @@ import React, { Suspense, useCallback, useEffect, useState } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 const LandingPage = React.lazy(() => import("./pages/LandingPage"));
-import LoginPage, { action as loginAction } from "./pages/LoginPage";
+import LoginPage from "./pages/LoginPage";
 import RegisterPage, { action as registerAction } from "./pages/RegisterPage";
 const RootLayout = React.lazy(() => import("./pages/RootLayout"));
 const FlightPage = React.lazy(() => import("./pages/FlightPage"));
@@ -32,13 +32,10 @@ const UnAuthPage = React.lazy(() => import("./pages/UnAuthPage"));
 import { checkAuthLoader } from "./utils/auth";
 import HotelsPage from "./pages/HotelsPage";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { setUser } from "./store/user-slice";
-import { setFlights } from "./store/flight-slice";
 import Error from "./components/UI/Error";
-import config from "./config";
 import { fetchFlights } from "./store/flight-action";
 import { fetchUser } from "./store/user-action";
+import PaymentPage from "./pages/PaymentPage";
 
 const router = createBrowserRouter([
   {
@@ -83,7 +80,6 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <LoginPage />,
-        action: loginAction,
       },
       {
         path: "register",
@@ -268,12 +264,15 @@ const router = createBrowserRouter([
       </Suspense>
     ),
   },
+  {
+    path: "paymentsuccess",
+    element: <PaymentPage />,
+  },
 ]);
 
 function App() {
   const token = useSelector((state) => state.user.token);
   const dispatch = useDispatch();
-  const showNotification = useSelector((state) => state.ui.notification);
 
   useEffect(() => {
     if (token) {
@@ -282,10 +281,6 @@ function App() {
 
     dispatch(fetchFlights());
   }, [token, dispatch]);
-
-  if (showNotification?.status === "error") {
-    return <Error message={showNotification.message} />;
-  }
 
   return <RouterProvider router={router} />;
 }

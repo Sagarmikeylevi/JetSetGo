@@ -33,9 +33,13 @@ const flightSlice = createSlice({
     setFlights(state, action) {
       state.flights = action.payload.flights;
     },
+    flightDelete(state, action) {
+      const { flightId } = action.payload;
+      state.flights = state.flights.filter((flight) => flight._id !== flightId);
+    },
   },
 });
 
-export const { setFlights } = flightSlice.actions;
+export const { setFlights, flightDelete } = flightSlice.actions;
 
 export default flightSlice;

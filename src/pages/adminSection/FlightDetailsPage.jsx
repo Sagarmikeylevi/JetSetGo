@@ -12,15 +12,10 @@ const FlightDetailsPage = () => {
   const { flightID } = useParams();
 
   const dispatch = useDispatch();
-  const showNotification = useSelector((state) => state.ui.notification);
 
   useEffect(() => {
     dispatch(fetchFlights());
   }, [dispatch]);
-
-  if (showNotification?.status) {
-    <Error message={showNotification.message} />;
-  }
 
   return (
     <Suspense

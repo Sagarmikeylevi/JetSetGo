@@ -3,21 +3,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "./UI/Loading";
 import {
+  checkOut,
   conformPassengerById,
   deletePassengerById,
 } from "../store/passenger-action";
+import axios from "axios";
+import config from "../config";
 
 const ShowPassenger = () => {
   const bookingDetails = useSelector(
     (state) => state.passenger.passengerDetails
   );
 
+  const totalAmmount = Number(
+    bookingDetails?.price + bookingDetails?.price * 0.18
+  );
   const passId = bookingDetails?._id;
   const [termsAndConditions, setTermsAndConditions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const token = useSelector((state) => state.user.token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const apiUrl = config.development.apiUrl;
 
   const cancelHandler = () => {
     setIsLoading(true);
@@ -30,8 +37,15 @@ const ShowPassenger = () => {
   };
 
   const conformHandler = () => {
+    const passengerData = {
+      name: bookingDetails.name,
+      email: bookingDetails.email,
+      phNo: bookingDetails.phoneNo,
+    };
+
+    console.log(totalAmmount);
+    dispatch(checkOut(passengerData, totalAmmount));
     dispatch(conformPassengerById(passId, token));
-    navigate("/flights");
   };
 
   if (isLoading) {
@@ -139,7 +153,7 @@ const ShowPassenger = () => {
               &#8377; {bookingDetails.price * 0.18}
             </p>
             <p className="px-3 py-2 bg-yellow-500 rounded-r-md w-full">
-              &#8377; {bookingDetails.price + bookingDetails.price * 0.18}
+              &#8377; {totalAmmount}
             </p>
           </div>
         </div>

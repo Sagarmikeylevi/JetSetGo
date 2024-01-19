@@ -150,3 +150,90 @@ export const conformPassengerById = (passId, token) => {
     }
   };
 };
+
+export const checkOut = (passengerData, totalAmmount) => {
+  return async (dispatch) => {
+    const paymentRequest = async () => {
+      const { data } = await axios.get(`${apiUrl}/api/payment/getAPI_KEY`);
+      const response = await axios.post(`${apiUrl}/api/payment/createOrder`, {
+        totalAmmount,
+      });
+      const options = {
+        key: data.apiKey,
+        amount: response.data.order.amount,
+        currency: "INR",
+        name: "JetSetGo",
+        description: "Test Transaction",
+        image: "https://cdn-icons-png.flaticon.com/128/5333/5333722.png",
+        order_id: response.data.order.id,
+        callback_url: `${apiUrl}/api/payment/paymentVarification`,
+        prefill: {
+          name: passengerData.name,
+          email: passengerData.email,
+          contact: passengerData.phNo,
+        },
+        notes: {
+          address: "JetSetGo Office ",
+        },
+        theme: {
+          color: "#99ff99",
+        },
+      };
+
+      return options;
+    };
+
+    try {
+      const options = await paymentRequest();
+      const rzp1 = new window.Razorpay(options);
+      rzp1.open();
+    } catch (error) {
+      showNotification({
+        status: "error",
+        title: "Error!",
+        message: "Conform request failed",
+      });
+      console.log(error);
+    }
+  };
+};
+
+/*
+
+const checkout = async (amount) => {
+      const { data } = await axios.get(`${apiUrl}/api/payment/getAPI_KEY`);
+      const response = await axios.post(`${apiUrl}/api/payment/createOrder`, {
+        amount,
+      });
+
+      console.log(response.data);
+      console.log(data);
+      const options = {
+        key: data.apiKey,
+        amount: response.data.order.amount,
+        currency: "INR",
+        name: "JetSetGo",
+        description: "Test Transaction",
+        image: "https://cdn-icons-png.flaticon.com/128/5333/5333722.png",
+        order_id: response.data.order.id,
+        callback_url: `${apiUrl}/api/payment/paymentVarification`,
+        prefill: {
+          name: "Gaurav Kumar",
+          email: "gaurav.kumar@example.com",
+          contact: "9000090000",
+        },
+        notes: {
+          address: "Razorpay Corporate Office",
+        },
+        theme: {
+          color: "#004d00",
+        },
+      };
+      const rzp1 = new window.Razorpay(options);
+
+      rzp1.open();
+    };
+
+    checkout(5000);
+
+*/
