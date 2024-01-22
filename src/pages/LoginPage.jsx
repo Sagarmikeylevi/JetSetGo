@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { Suspense } from "react";
 
 const Login = React.lazy(() => import("../components/Login"));

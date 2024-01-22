@@ -1,9 +1,11 @@
-import React, { Suspense, useCallback, useEffect, useState } from "react";
+import React, { Suspense, useEffect } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 const LandingPage = React.lazy(() => import("./pages/LandingPage"));
 import LoginPage from "./pages/LoginPage";
-import RegisterPage, { action as registerAction } from "./pages/RegisterPage";
+import RegisterPage, {
+  action as registationAction,
+} from "./pages/RegisterPage";
 const RootLayout = React.lazy(() => import("./pages/RootLayout"));
 const FlightPage = React.lazy(() => import("./pages/FlightPage"));
 const AdminPage = React.lazy(() => import("./pages/adminSection/AdminPage"));
@@ -32,7 +34,6 @@ const UnAuthPage = React.lazy(() => import("./pages/UnAuthPage"));
 import { checkAuthLoader } from "./utils/auth";
 import HotelsPage from "./pages/HotelsPage";
 import { useDispatch, useSelector } from "react-redux";
-import Error from "./components/UI/Error";
 import { fetchFlights } from "./store/flight-action";
 import { fetchUser } from "./store/user-action";
 import PaymentPage from "./pages/PaymentPage";
@@ -84,7 +85,7 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <RegisterPage />,
-        action: registerAction,
+        action: registationAction,
       },
       {
         path: "hotels",

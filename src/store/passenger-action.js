@@ -7,7 +7,7 @@ import {
 } from "./passenger-slice";
 import { showNotification } from "./ui-slice";
 
-const apiUrl = config.development.apiUrl;
+const apiUrl = config.production.apiUrl;
 
 export const fetchPassengers = (token) => {
   return async (dispatch) => {
@@ -176,7 +176,7 @@ export const checkOut = (passengerData, totalAmmount) => {
           address: "JetSetGo Office ",
         },
         theme: {
-          color: "#99ff99",
+          color: "#145214",
         },
       };
 

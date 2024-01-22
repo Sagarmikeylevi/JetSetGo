@@ -8,7 +8,6 @@ import { getAuthToken } from "../utils/auth";
 import config from "../config";
 
 const PassengerDetailsPage = () => {
-  // console.log("<PassengerDetailsPage /> rendered");
   return (
     <Suspense
       fallback={
@@ -28,7 +27,7 @@ export const action = async ({ request }) => {
   try {
     const data = await request.formData();
     const urlParams = new URLSearchParams(window.location.search);
-    const apiUrl = config.development.apiUrl;
+    const apiUrl = config.production.apiUrl;
 
     // Get values by key
     const flightId = urlParams.get("flightId");

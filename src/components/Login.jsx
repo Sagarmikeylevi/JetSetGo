@@ -28,9 +28,9 @@ const Login = () => {
     }, 1000);
   };
 
-  if (notification?.status === "error") {
-    return <Error message={notification.message} />;
-  }
+  // if (notification?.status === "error") {
+  //   return <Error message={notification.message} />;
+  // }
 
   const formLabelStyle = "font-semibold text-gray-600";
   const formInputStyle =

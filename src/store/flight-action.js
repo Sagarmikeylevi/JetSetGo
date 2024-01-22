@@ -3,7 +3,7 @@ import config from "../config";
 import { flightDelete, setFlights } from "./flight-slice";
 import { showNotification } from "./ui-slice";
 
-const apiUrl = config.development.apiUrl;
+const apiUrl = config.production.apiUrl;
 
 export const fetchFlights = () => {
   return async (dispatch) => {

@@ -4,7 +4,7 @@ import { showNotification } from "./ui-slice";
 import config from "../config";
 import { redirect } from "react-router-dom";
 
-const apiUrl = config.development.apiUrl;
+const apiUrl = config.production.apiUrl;
 
 export const loginRequest = (userData) => {
   return async (dispatch) => {

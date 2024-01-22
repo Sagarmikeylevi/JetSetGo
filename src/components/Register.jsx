@@ -5,15 +5,12 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  // getting the response if there is any error
   const response = useActionData();
 
   if (response) {
     return <Error message={response.data.error} />;
   }
 
-  // using navigation for showing the subitting state
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 

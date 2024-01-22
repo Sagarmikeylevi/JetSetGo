@@ -25,7 +25,7 @@ export default AddFlightFormPage;
 
 export const action = async ({ request }) => {
   try {
-    const apiUrl = config.development.apiUrl;
+    const apiUrl = config.production.apiUrl;
     const currentURL = window.location.href;
     // console.log("Current URL:", currentURL);
     const token = getAuthToken();
