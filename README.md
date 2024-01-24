@@ -1,5 +1,5 @@
 ## JetSetGo - Flight Booking Web App
-JetSetGo is a flight booking web application that allows users to search for flights, make bookings, and manage flights. The application features user authentication for both admin and normal users, flight search functionality, passenger details input for payment processing through Razorpay, and admin capabilities such as adding, deleting, and updating flights.
+JetSetGo is a flight booking web application that allows users to search for flights, make bookings, and manage flights. The application features user authentication for both admin and normal users, flight search functionality, passenger details input for payment processing through Razorpay, and admin capabilities such as adding, deleting, and updating flights. For Backend Used - https://github.com/Sagarmikeylevi/JetSetGo-Backend ( JetSetGo Backend) API.
 
 ## Features
 - # User Authentication:
@@ -31,4 +31,8 @@ Update flight information as needed.
 ![Screenshot (298)](https://github.com/Sagarmikeylevi/JetSetGo/assets/114811573/898f0873-919e-4dca-93cf-839e94cf056f)
 
 
-## Visit: https://jet-set-go-taupe.vercel.app/
+## Visit: 
+https://jet-set-go-taupe.vercel.app/
+
+## Video: 
+https://www.youtube.com/watch?v=ZsHMqKzf4YU
