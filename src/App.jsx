@@ -140,10 +140,6 @@ const router = createBrowserRouter([
     path: "/unAuth",
     element: <UnAuthPage />,
   },
-  {
-    path: "/paymentsuccess",
-    element: <PaymentPage />,
-  },
 ]);
 
 function App() {
