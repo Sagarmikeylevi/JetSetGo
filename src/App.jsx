@@ -141,7 +141,7 @@ const router = createBrowserRouter([
     element: <UnAuthPage />,
   },
   {
-    path: "paymentsuccess",
+    path: "/paymentsuccess",
     element: <PaymentPage />,
   },
 ]);
