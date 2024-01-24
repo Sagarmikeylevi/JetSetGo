@@ -1,11 +1,10 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect } from "react";
 const OnBoardPassenger = React.lazy(() =>
   import("../components/OnBoardPassenger")
 );
 import { useDispatch, useSelector } from "react-redux";
 
 import { useLocation } from "react-router-dom";
-import Loading from "../components/UI/Loading";
 import { fetchPassengers } from "../store/passenger-action";
 
 const OnBoardPassengerPage = () => {

@@ -5,7 +5,7 @@ const FlightDetails = React.lazy(() =>
 );
 import { useParams } from "react-router-dom";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchFlights } from "../../store/flight-action";
 
 const FlightDetailsPage = () => {

@@ -7,8 +7,6 @@ import {
   conformPassengerById,
   deletePassengerById,
 } from "../store/passenger-action";
-import axios from "axios";
-import config from "../config";
 
 const ShowPassenger = () => {
   const bookingDetails = useSelector(
@@ -24,7 +22,6 @@ const ShowPassenger = () => {
   const token = useSelector((state) => state.user.token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const apiUrl = config.development.apiUrl;
 
   const cancelHandler = () => {
     setIsLoading(true);
@@ -43,7 +40,6 @@ const ShowPassenger = () => {
       phNo: bookingDetails.phoneNo,
     };
 
-    console.log(totalAmmount);
     dispatch(checkOut(passengerData, totalAmmount));
     dispatch(conformPassengerById(passId, token));
   };
@@ -187,7 +183,9 @@ const ShowPassenger = () => {
             }`}
             onClick={conformHandler}
           >
-            Conform
+            {!termsAndConditions
+              ? "Please check T&C before clicking"
+              : "Conform"}
           </button>
         )}
 

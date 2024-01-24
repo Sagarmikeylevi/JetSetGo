@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Card from "./UI/Card";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Loading from "./UI/Loading";
 

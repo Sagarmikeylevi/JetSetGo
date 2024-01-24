@@ -2,7 +2,6 @@ import axios from "axios";
 import { setToken, setUser } from "./user-slice";
 import { showNotification } from "./ui-slice";
 import config from "../config";
-import { redirect } from "react-router-dom";
 
 const apiUrl = config.production.apiUrl;
 
@@ -46,13 +45,7 @@ export const fetchUser = (token) => {
       const user = await fetchData();
       dispatch(setUser({ user }));
     } catch (error) {
-      dispatch(
-        showNotification({
-          status: "error",
-          title: "Error!",
-          message: "Fetching user data failed",
-        })
-      );
+      console.log(error);
     }
   };
 };

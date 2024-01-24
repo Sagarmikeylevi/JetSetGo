@@ -4,7 +4,7 @@ const config = {
     apiUrl: "http://localhost:8000",
   },
   production: {
-    apiUrl: "https://jetsetgoapinew.onrender.com",
+    apiUrl: "https://jetsetgo-backend-production.up.railway.app",
   },
 };
 

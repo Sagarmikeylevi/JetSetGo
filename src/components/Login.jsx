@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { Link, Form, useNavigate } from "react-router-dom";
 import Error from "./UI/Error";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setToken } from "../store/user-slice";
 import { loginRequest } from "../store/user-action";
 
 const Login = () => {
@@ -28,9 +26,9 @@ const Login = () => {
     }, 1000);
   };
 
-  // if (notification?.status === "error") {
-  //   return <Error message={notification.message} />;
-  // }
+  if (notification?.status === "error") {
+    return <Error message={notification.message} />;
+  }
 
   const formLabelStyle = "font-semibold text-gray-600";
   const formInputStyle =
