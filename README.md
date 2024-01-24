@@ -28,6 +28,7 @@ Update flight information as needed.
 - Express Js
 - MongoDB
 
-![Uploading Screenshot (298).png…]()
+![Screenshot (298)](https://github.com/Sagarmikeylevi/JetSetGo/assets/114811573/898f0873-919e-4dca-93cf-839e94cf056f)
+
 
 
