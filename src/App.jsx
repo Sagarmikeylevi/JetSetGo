@@ -1,36 +1,28 @@
 import React, { Suspense, useEffect } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-const LandingPage = React.lazy(() => import("./pages/LandingPage"));
+import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage, {
   action as registationAction,
 } from "./pages/RegisterPage";
-const RootLayout = React.lazy(() => import("./pages/RootLayout"));
-const FlightPage = React.lazy(() => import("./pages/FlightPage"));
-const AdminPage = React.lazy(() => import("./pages/adminSection/AdminPage"));
-const AdminFlight = React.lazy(() =>
-  import("./pages/adminSection/AdminFlight")
-);
+import RootLayout from "./pages/RootLayout";
+import FlightPage from "./pages/FlightPage";
+import AdminPage from "./pages/adminSection/AdminPage";
+import AdminFlight from "./pages/adminSection/AdminFlight";
 import AddFlightFormPage, {
   action as addFlightAction,
 } from "./pages/adminSection/AddFlightFormPage";
-const ErrorPage = React.lazy(() => import("./pages/ErrorPage"));
-const FlightDetailsPage = React.lazy(() =>
-  import("./pages/adminSection/FlightDetailsPage")
-);
-const SearchedFlightsPage = React.lazy(() =>
-  import("./pages/SearchedFlightsPage")
-);
+import ErrorPage from "./pages/ErrorPage";
+import FlightDetailsPage from "./pages/adminSection/FlightDetailsPage";
+import SearchedFlightsPage from "./pages/SearchedFlightsPage";
 import PassengerDetailsPage, {
   action as passengerAction,
 } from "./pages/PassengerDetailsPage";
-const ShowPassengerPage = React.lazy(() => import("./pages/ShowPassengerPage"));
-const OnBoardListPage = React.lazy(() => import("./pages/OnBoardListPage"));
-const OnBoardPassengerPage = React.lazy(() =>
-  import("./pages/OnBoardPassengerPage")
-);
-const UnAuthPage = React.lazy(() => import("./pages/UnAuthPage"));
+import ShowPassengerPage from "./pages/ShowPassengerPage";
+import OnBoardListPage from "./pages/OnBoardListPage";
+import OnBoardPassengerPage from "./pages/OnBoardPassengerPage";
+import UnAuthPage from "./pages/UnAuthPage";
 import { checkAuthLoader } from "./utils/auth";
 import HotelsPage from "./pages/HotelsPage";
 import { useDispatch, useSelector } from "react-redux";
@@ -41,42 +33,13 @@ import PaymentPage from "./pages/PaymentPage";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <Suspense
-        fallback={
-          <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
-            Loading....
-          </p>
-        }
-      >
-        <RootLayout />
-      </Suspense>
-    ),
-    errorElement: (
-      <Suspense
-        fallback={
-          <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
-            Loading....
-          </p>
-        }
-      >
-        <ErrorPage />
-      </Suspense>
-    ),
+    element: <RootLayout />,
+
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
-        element: (
-          <Suspense
-            fallback={
-              <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
-                Loading....
-              </p>
-            }
-          >
-            <LandingPage />
-          </Suspense>
-        ),
+        element: <LandingPage />,
       },
       {
         path: "login",
@@ -96,31 +59,11 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: (
-              <Suspense
-                fallback={
-                  <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
-                    Loading....
-                  </p>
-                }
-              >
-                <FlightPage />
-              </Suspense>
-            ),
+            element: <FlightPage />,
           },
           {
             path: "flight-results",
-            element: (
-              <Suspense
-                fallback={
-                  <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
-                    Loading....
-                  </p>
-                }
-              >
-                <SearchedFlightsPage />
-              </Suspense>
-            ),
+            element: <SearchedFlightsPage />,
             loader: checkAuthLoader,
           },
           {
@@ -131,17 +74,7 @@ const router = createBrowserRouter([
           },
           {
             path: "show-passenger",
-            element: (
-              <Suspense
-                fallback={
-                  <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
-                    Loading....
-                  </p>
-                }
-              >
-                <ShowPassengerPage />
-              </Suspense>
-            ),
+            element: <ShowPassengerPage />,
             loader: checkAuthLoader,
           },
           {
@@ -149,32 +82,14 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: (
-                  <Suspense
-                    fallback={
-                      <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
-                        Loading....
-                      </p>
-                    }
-                  >
-                    <OnBoardListPage />,
-                  </Suspense>
-                ),
+                element: <OnBoardListPage />,
+
                 loader: checkAuthLoader,
               },
               {
                 path: "passengers",
-                element: (
-                  <Suspense
-                    fallback={
-                      <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
-                        Loading....
-                      </p>
-                    }
-                  >
-                    <OnBoardPassengerPage />,
-                  </Suspense>
-                ),
+                element: <OnBoardPassengerPage />,
+
                 loader: checkAuthLoader,
               },
             ],
@@ -186,17 +101,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: (
-              <Suspense
-                fallback={
-                  <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
-                    Loading....
-                  </p>
-                }
-              >
-                <AdminPage />
-              </Suspense>
-            ),
+            element: <AdminPage />,
             loader: checkAuthLoader,
           },
           {
@@ -205,17 +110,7 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: (
-                  <Suspense
-                    fallback={
-                      <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
-                        Loading....
-                      </p>
-                    }
-                  >
-                    <AdminFlight />
-                  </Suspense>
-                ),
+                element: <AdminFlight />,
                 loader: checkAuthLoader,
               },
               {
@@ -226,17 +121,7 @@ const router = createBrowserRouter([
               },
               {
                 path: ":flightID",
-                element: (
-                  <Suspense
-                    fallback={
-                      <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
-                        Loading....
-                      </p>
-                    }
-                  >
-                    <FlightDetailsPage />
-                  </Suspense>
-                ),
+                element: <FlightDetailsPage />,
                 loader: checkAuthLoader,
               },
               {
@@ -253,17 +138,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/unAuth",
-    element: (
-      <Suspense
-        fallback={
-          <p className="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-lg font-bold text-green-900">
-            Loading....
-          </p>
-        }
-      >
-        <UnAuthPage />
-      </Suspense>
-    ),
+    element: <UnAuthPage />,
   },
   {
     path: "paymentsuccess",

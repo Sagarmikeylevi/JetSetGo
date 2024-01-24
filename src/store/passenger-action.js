@@ -173,7 +173,7 @@ export const checkOut = (passengerData, totalAmmount) => {
           contact: passengerData.phNo,
         },
         notes: {
-          address: "JetSetGo Office ",
+          address: "JetSetGo Office",
         },
         theme: {
           color: "#145214",
