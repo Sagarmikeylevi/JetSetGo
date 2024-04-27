@@ -28,7 +28,7 @@ import HotelsPage from "./pages/HotelsPage";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFlights } from "./store/flight-action";
 import { fetchUser } from "./store/user-action";
-import PaymentPage from "./pages/PaymentPage";
+// import PaymentPage from "./pages/PaymentPage";
 
 const router = createBrowserRouter([
   {
